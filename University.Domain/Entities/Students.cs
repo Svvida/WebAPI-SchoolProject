@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using University.Domain.Enums;
 
 namespace University.Domain.Entities
@@ -13,7 +8,7 @@ namespace University.Domain.Entities
         public Guid id { get; set; }
 
         [Required]
-        [StringLength(55, MinimumLength =2)]
+        [StringLength(55, MinimumLength = 2)]
         public string name { get; set; }
 
         [Required]
@@ -26,7 +21,7 @@ namespace University.Domain.Entities
         [Required]
         [StringLength(11)]
         [RegularExpression(@"^\d{11}$")]
-        public string pesel {  get; set; }
+        public string pesel { get; set; }
 
         // Enum defined in other folder
         public Gender gender { get; set; }
@@ -36,6 +31,6 @@ namespace University.Domain.Entities
         public Students_Addresses address { get; set; } // Navigation property
 
         public Guid account_id { get; set; }
-        public Users_Accounts account {  get; set; }
+        public Users_Accounts account { get; set; }
     }
 }

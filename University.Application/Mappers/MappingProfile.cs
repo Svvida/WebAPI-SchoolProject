@@ -1,9 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using University.Application.DTOs;
 using University.Domain.Entities;
 
@@ -16,7 +11,9 @@ namespace University.Application.Mappers
             // CreateMap<TSource, TDestination>();
             CreateMap<Users_Accounts, AccountDto>().ReverseMap();
             CreateMap<Roles, RoleDto>().ReverseMap();
-
+            CreateMap<Users_Accounts_Roles, AccountRoleDto>().ReverseMap();
+            CreateMap<Students, StudentDto>().ReverseMap();
+            CreateMap<Students_Addresses, AddressDto>().ReverseMap();
         }
     }
 }

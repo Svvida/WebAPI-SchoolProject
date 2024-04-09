@@ -1,9 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using University.Application.DTOs;
 using University.Domain.Entities;
 using University.Domain.Interfaces;
@@ -38,7 +33,10 @@ namespace University.Application.Services
         public async Task<AccountDto> GetAccountByIdAsync(Guid id)
         {
             var account = await _accountRepository.GetByIdAsync(id);
-            if (account is null) throw new KeyNotFoundException("Account not found");
+            if (account is null)
+            {
+                throw new KeyNotFoundException("Account not found");
+            }
 
             return _mapper.Map<AccountDto>(account);
         }
@@ -54,9 +52,18 @@ namespace University.Application.Services
         public async Task DeleteAccountAsync(Guid id)
         {
             var accountToDelete = await _accountRepository.GetByIdAsync(id);
-            if (accountToDelete is null) throw new KeyNotFoundException("Account not found");
+            if (accountToDelete is null)
+            {
+                throw new KeyNotFoundException("Account not found");
+            }
 
             await _accountRepository.DeleteAsync(id);
+        }
+
+        public async Task AddAccountAsync(AccountDto accountDto)
+        {
+            var accountEntity = _mapper.Map<Users_Accounts>(accountDto);
+            await _accountRepository.AddAsync(accountEntity);
         }
     }
 }

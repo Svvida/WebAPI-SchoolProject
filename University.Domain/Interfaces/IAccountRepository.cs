@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using University.Domain.Entities;
+﻿using University.Domain.Entities;
 
 namespace University.Domain.Interfaces
 {
@@ -14,5 +9,7 @@ namespace University.Domain.Interfaces
         Task<Users_Accounts> AddAsync(Users_Accounts account);
         Task UpdateAsync(Users_Accounts account);
         Task DeleteAsync(Guid id);
+        Task AddRoleToAccountAsync(Guid userId, Guid roleId);
+        Task DeleteRoleFromAccountAsync(Guid userId, Guid roleId);
     }
 }

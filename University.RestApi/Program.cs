@@ -1,10 +1,14 @@
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using University.Application.Mappers;
+using University.Domain.Entities;
 using University.Domain.Interfaces;
 using University.Infrastructure.Data;
 using University.Infrastructure.Repositories;
-
 
 namespace University.RestApi
 {
@@ -14,16 +18,44 @@ namespace University.RestApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Load secrets.json for development purposes
+            builder.Configuration.AddJsonFile("secrets.json", optional:true, reloadOnChange: true);
+
+            // Configure JWT authentication service
+            var jwtSecretKey = builder.Configuration["JwtSettings:SecretKey"];
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey))
+                    };
+                });
+
+            // Configure database context
             builder.Services.AddDbContext<UniversityContext>(options =>
-            options.UseInMemoryDatabase("University"));
+                options.UseInMemoryDatabase("University"));
 
+            // Register password hasher for user accounts
+            builder.Services.AddScoped<IPasswordHasher<Users_Accounts>, PasswordHasher<Users_Accounts>>();
+
+            // Repositories
             builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-            builder.Services.AddScoped<AccountRepository>();
 
+            // Automapper configuration
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+            // Controllers
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            // Swagger configuration
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -38,12 +70,22 @@ namespace University.RestApi
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
-            app.Run();
+            // Seed the database
+            using (var scope = app.Services.CreateScope())
+            {
+                var services =scope.ServiceProvider;
+                var context = services.GetRequiredService<UniversityContext>();
+                var passwordHasher = services.GetRequiredService<IPasswordHasher<Users_Accounts?>>();
+                var configuration = services.GetRequiredService<IConfiguration>();
+                UniversityContextSeed.Initialize(context, passwordHasher, configuration);
+            }
+
+                app.Run();
         }
     }
 }

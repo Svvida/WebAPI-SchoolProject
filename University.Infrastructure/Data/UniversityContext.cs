@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using University.Domain.Entities;
 
 namespace University.Infrastructure.Data
@@ -21,7 +16,7 @@ namespace University.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Users_Accounts_Roles>()
-                .HasKey(uar => new {uar.account_id, uar.role_id});
+                .HasKey(uar => new { uar.account_id, uar.role_id });
 
             modelBuilder.Entity<Users_Accounts_Roles>()
                 .HasOne(uar => uar.account)
@@ -36,7 +31,8 @@ namespace University.Infrastructure.Data
             modelBuilder.Entity<Students>()
                 .HasOne(s => s.address)
                 .WithOne(sa => sa.student)
-                .HasForeignKey<Students>(s => s.address_id);
+                .HasForeignKey<Students>(s => s.address_id)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

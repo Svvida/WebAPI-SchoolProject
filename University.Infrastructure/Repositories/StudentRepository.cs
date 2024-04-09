@@ -1,0 +1,52 @@
+﻿using Microsoft.EntityFrameworkCore;
+using University.Domain.Entities;
+using University.Domain.Interfaces;
+using University.Infrastructure.Data;
+
+namespace University.Infrastructure.Repositories
+{
+    public class StudentRepository : IStudentRepository
+    {
+        private readonly UniversityContext _context;
+        public StudentRepository(UniversityContext context)
+        {
+            _context = context;
+        }
+        public async Task<IEnumerable<Students>> GetAllStudentsAsync()
+        {
+            return await _context.Students.ToListAsync();
+        }
+        public async Task<Students> GetStudentByIdAsync(Guid id)
+        {
+            var student = await _context.Students.FindAsync(id);
+
+            if (student == null)
+            {
+                throw new KeyNotFoundException("That student doesn't exist");
+            }
+
+            return student;
+        }
+        public async Task UpdateStudentAsync(Students student)
+        {
+            _context.Entry(student).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+        public async Task AddStudentAsync(Students student)
+        {
+            _context.Students.Add(student);
+            await _context.SaveChangesAsync();
+        }
+        public async Task DeleteStudentAsync(Guid id)
+        {
+            var student = _context.Students.Find(id);
+            if (student == null)
+            {
+                throw new KeyNotFoundException("That student doesn't exist");
+            }
+
+            _context.Students.Remove(student);
+            await _context.SaveChangesAsync();
+        }
+    }
+}

@@ -9,12 +9,12 @@ using University.Domain.Interfaces;
 
 namespace University.Application.Services
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AuthService : IAuthService
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IPasswordHasher<Users_Accounts> _passwordHasher;
 
-        public AuthenticationService(IAccountRepository accountRepository, IPasswordHasher<Users_Accounts> passwordHasher)
+        public AuthService(IAccountRepository accountRepository, IPasswordHasher<Users_Accounts> passwordHasher)
         {
             _accountRepository = accountRepository;
             _passwordHasher = passwordHasher;
@@ -24,15 +24,17 @@ namespace University.Application.Services
         {
             // Fetch the user
             var user = await _accountRepository.GetByLoginAsync(login);
-            if (user == null) throw new KeyNotFoundException("User not found");
 
-            var result = _passwordHasher.VerifyHashedPassword(user, user.password, password);
-            if(result == PasswordVerificationResult.Success)
+            if (user is not null)
             {
-                return user;
+                var result = _passwordHasher.VerifyHashedPassword(user, user.password, password);
+                if(result == PasswordVerificationResult.Success)
+                {
+                    return user;
+                }
             }
 
-            throw new Exception("Password did not match");
+            return null;
         }
     }
 }

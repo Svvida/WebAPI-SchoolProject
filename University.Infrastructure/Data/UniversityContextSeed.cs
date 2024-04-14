@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using University.Domain.Entities;
 
@@ -177,6 +178,19 @@ namespace University.Infrastructure.Data
                         account = martaAccount
                     }
                 };
+                // Immediately after seeding...
+                var seededAddresses = context.Addresses.ToList();
+                foreach (var address in seededAddresses)
+                {
+                    Console.WriteLine($"Address ID: {address.id}, PostalCode: {address.postal_code}");
+                }
+
+                var seededStudents = context.Students.Include(s => s.address).ToList();
+                foreach (var student in seededStudents)
+                {
+                    Console.WriteLine($"Student ID: {student.id}, Address: {student.address?.city}, PostalCode: {student.address?.postal_code}");
+                }
+
                 context.AddRange(students);
                 context.SaveChanges();
             };

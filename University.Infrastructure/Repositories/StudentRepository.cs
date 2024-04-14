@@ -14,7 +14,9 @@ namespace University.Infrastructure.Repositories
         }
         public async Task<IEnumerable<Students>> GetAllStudentsAsync()
         {
-            return await _context.Students.ToListAsync();
+            return await _context.Students
+                .Include(s=>s.address)
+                .ToListAsync();
         }
         public async Task<Students> GetStudentByIdAsync(Guid id)
         {

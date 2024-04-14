@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using University.Application.DTOs;
+using University.Application.NewFolder;
 using University.Domain.Entities;
 using University.Domain.Interfaces;
 
 namespace University.Application.Services
 {
-    public class StudentService
+    public class StudentService : IStudentService
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IMapper _mapper;

@@ -1,16 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using University.Application.DTOs;
+using University.Application.NewFolder;
 using University.Application.Services;
+using University.Domain.Interfaces;
 
 namespace University.RestApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class StudentsController : Controller
     {
-        private readonly StudentService _studentSerivce;
+        private readonly IStudentService _studentSerivce;
 
-        public StudentsController(StudentService studentService)
+        public StudentsController(IStudentService studentService)
         {
             _studentSerivce = studentService;
         }

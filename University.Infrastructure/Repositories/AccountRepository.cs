@@ -89,16 +89,13 @@ namespace University.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Users_Accounts> GetAccountByLoginAsync(string login)
+        public async Task<Users_Accounts> GetByLoginAsync(string login)
         {
-            if (login != null)
-            {
-                return await _context.Accounts
+            if (login == null) throw new KeyNotFoundException("There is no student with that login");
+
+            return await _context.Accounts
                 .Where(a => a.login == login)
                 .FirstOrDefaultAsync();
-            }
-            throw new KeyNotFoundException("There is no student with that login");
-
         }
     }
 }

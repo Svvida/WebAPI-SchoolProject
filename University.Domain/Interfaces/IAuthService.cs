@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using University.Domain.Entities;
 
 namespace University.Domain.Interfaces
 {
-    internal interface IAuthenticationService
+    public interface IAuthService
     {
+        Task<Users_Accounts> ValidateUserAsync(string login, string password);
     }
 }

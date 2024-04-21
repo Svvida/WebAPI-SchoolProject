@@ -4,6 +4,8 @@ namespace University.Domain.Entities
 {
     public class Students_Addresses
     {
+        public string PostalCode;
+
         [Required]
         public Guid id { get; set; }
         [Required]
@@ -18,7 +20,5 @@ namespace University.Domain.Entities
         public string building_number { get; set; }
         [Required]
         public string apartment_number { get; set; }
-
-        public Students student { get; set; }
     }
 }

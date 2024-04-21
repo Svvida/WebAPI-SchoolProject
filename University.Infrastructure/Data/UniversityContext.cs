@@ -30,7 +30,7 @@ namespace University.Infrastructure.Data
 
             modelBuilder.Entity<Students>()
                 .HasOne(s => s.address)
-                .WithOne(sa => sa.student)
+                .WithOne()
                 .HasForeignKey<Students>(s => s.address_id)
                 .OnDelete(DeleteBehavior.Cascade);
         }

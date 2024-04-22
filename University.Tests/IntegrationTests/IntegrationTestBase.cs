@@ -1,19 +1,16 @@
-﻿using Castle.Core.Configuration;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using University.Domain.Entities;
 using University.Infrastructure.Data;
+using Microsoft.Extensions.Configuration;
 
 namespace University.Tests.IntegrationTests
 {
     public class IntegrationTestBase : IDisposable
     {
         protected readonly UniversityContext context;
-        private readonly Mock<IConfiguration> configuration;
+        private readonly Mock<IConfiguration> mockConfiguration;
 
         public IntegrationTestBase()
         {
@@ -23,12 +20,22 @@ namespace University.Tests.IntegrationTests
 
             context = new UniversityContext(options);
 
-            configuration = new Mock<IConfiguration>();
+            // Initialize the mock configuration
+            mockConfiguration = new Mock<IConfiguration>();
+            setUpConfiguration();
+
+            var passwordHasher = new PasswordHasher<Users_Accounts?>();
+
+            // Seed the database using mocked configuration
+            UniversityContextSeed.Initialize(context, passwordHasher, mockConfiguration.Object);
         }
 
         private void setUpConfiguration()
         {
-
+            mockConfiguration.SetupGet(config => config["SeedPasswords:Admin"]).Returns("MockAdminPassword");
+            mockConfiguration.SetupGet(config => config["SeedPasswords:JanKowalski"]).Returns("MockJanKowalskiPassword");
+            mockConfiguration.SetupGet(config => config["SeedPasswords:MartaRadzka"]).Returns("MockMartaRadzkaPassword");
+            mockConfiguration.SetupGet(config => config["SeedPasswords:KamilNowak"]).Returns("MockKamilNowakPassword");
         }
 
         public void Dispose()

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using University.Application.DTOs;
 
-namespace University.Application.NewFolder
+namespace University.Application.Interfaces
 {
     public interface IStudentService
     {

@@ -20,13 +20,13 @@ namespace University.Tests.IntegrationTests
 
             context = new UniversityContext(options);
 
-            // Initialize the mock configuration
+            // Initialize mock configuration
             mockConfiguration = new Mock<IConfiguration>();
             setUpConfiguration();
 
             var passwordHasher = new PasswordHasher<Users_Accounts?>();
 
-            // Seed the database using mocked configuration
+            // Seed roles and accounts to the databsae
             UniversityContextSeed.Initialize(context, passwordHasher, mockConfiguration.Object);
         }
 

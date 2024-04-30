@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using University.Application.DTOs;
-using University.Application.NewFolder;
+using University.Application.Interfaces;
 using University.Domain.Entities;
 using University.Domain.Interfaces;
 

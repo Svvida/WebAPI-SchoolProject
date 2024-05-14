@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using University.Application.Mappers;
-using University.Application.NewFolder;
+using University.Application.Interfaces;
 using University.Application.Services;
 using University.Domain.Entities;
 using University.Domain.Interfaces;

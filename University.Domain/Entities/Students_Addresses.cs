@@ -4,8 +4,6 @@ namespace University.Domain.Entities
 {
     public class Students_Addresses
     {
-        public string PostalCode;
-
         [Required]
         public Guid id { get; set; }
         [Required]

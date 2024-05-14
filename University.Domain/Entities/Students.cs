@@ -27,10 +27,10 @@ namespace University.Domain.Entities
         public Gender gender { get; set; }
 
         // Relations
-        public Guid address_id { get; set; }
-        public Students_Addresses address { get; set; } // Navigation property
+        public Guid? address_id { get; set; }
+        public Students_Addresses? address { get; set; } // Navigation property
 
-        public Guid account_id { get; set; }
-        public Users_Accounts account { get; set; }
+        public Guid? account_id { get; set; }
+        public Users_Accounts? account { get; set; }
     }
 }

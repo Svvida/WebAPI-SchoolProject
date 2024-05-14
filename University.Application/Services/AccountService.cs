@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using University.Application.DTOs;
 using University.Domain.Entities;
 using University.Domain.Interfaces;
@@ -9,11 +10,13 @@ namespace University.Application.Services
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IMapper _mapper;
+        private readonly IPasswordHasher<Users_Accounts?> _passwordHasher;
 
-        public AccountService(IAccountRepository accountRepository, IMapper mapper)
+        public AccountService(IAccountRepository accountRepository, IMapper mapper, IPasswordHasher<Users_Accounts?> passwordHasher)
         {
             _accountRepository = accountRepository;
             _mapper = mapper;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<IEnumerable<AccountDto>> GetAllAccountsAsync()
@@ -43,9 +46,18 @@ namespace University.Application.Services
 
         public async Task UpdateAccountAsync(AccountDto accountDto)
         {
-            // First we convert DTO to entity
-            var accountEntity = _mapper.Map<Users_Accounts>(accountDto);
-            // Then we can call a method to update it
+            var accountEntity = await _accountRepository.GetByIdAsync(accountDto.Id);
+            if (accountEntity is null)
+            {
+                throw new KeyNotFoundException("Account not found");
+            }
+
+            _mapper.Map(accountDto, accountEntity);
+            if(!string.IsNullOrWhiteSpace(accountDto.Password))
+            {
+                accountEntity.password = _passwordHasher.HashPassword(accountEntity, accountDto.Password);
+            }
+
             await _accountRepository.UpdateAsync(accountEntity);
         }
 
@@ -63,6 +75,8 @@ namespace University.Application.Services
         public async Task AddAccountAsync(AccountDto accountDto)
         {
             var accountEntity = _mapper.Map<Users_Accounts>(accountDto);
+            // Hash password before saving it to the database
+            accountEntity.password = _passwordHasher.HashPassword(accountEntity, accountDto.Password);
             await _accountRepository.AddAsync(accountEntity);
         }
     }

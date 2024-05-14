@@ -4,6 +4,7 @@ using Moq;
 using University.Domain.Entities;
 using University.Infrastructure.Data;
 using Microsoft.Extensions.Configuration;
+using AutoFixture;
 
 namespace University.Tests.IntegrationTests
 {
@@ -11,6 +12,8 @@ namespace University.Tests.IntegrationTests
     {
         protected readonly UniversityContext context;
         private readonly Mock<IConfiguration> mockConfiguration;
+        protected readonly Fixture fixture;
+
 
         public IntegrationTestBase()
         {
@@ -19,6 +22,12 @@ namespace University.Tests.IntegrationTests
                 .Options;
 
             context = new UniversityContext(options);
+            fixture = new Fixture();
+
+            // Remove recursion behavior from AutoFixture
+            fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+                .ForEach(b => fixture.Behaviors.Remove(b));
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
 
             // Initialize mock configuration
             mockConfiguration = new Mock<IConfiguration>();

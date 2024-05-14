@@ -13,6 +13,7 @@ namespace University.Application.DTOs
         public Guid AddressId { get; set; }
         public AddressDto Address { get; set; }
         public Guid AccountId { get; set; }
+        public AccountDto Account { get; set; }
 
     }
 }

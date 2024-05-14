@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using University.Application.DTOs;
-using University.Application.NewFolder;
+using University.Application.Interfaces;
 using University.Application.Services;
 using University.Domain.Interfaces;
 

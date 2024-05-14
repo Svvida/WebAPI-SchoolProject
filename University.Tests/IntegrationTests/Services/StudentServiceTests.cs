@@ -1,5 +1,7 @@
-﻿using AutoMapper;
+﻿using AutoFixture;
+using AutoMapper;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,7 @@ using University.Application.Interfaces;
 using University.Application.Mappers;
 using University.Application.Services;
 using University.Domain.Entities;
+using University.Domain.Enums;
 using University.Infrastructure.Repositories;
 
 namespace University.Tests.IntegrationTests.Services
@@ -30,30 +33,51 @@ namespace University.Tests.IntegrationTests.Services
         public async Task AddStudentAsync_StudentIsAdded()
         {
             // Arrange
-            var student = new Students
-            {
-                id = Guid.NewGuid(),
-                name = "Jan",
-                surname = "Kowalski",
-                date_of_birth = new DateTime(1990, 1, 1),
-                pesel = "12345678901",
-                address = new Students_Addresses
-                {
-                    country = "Poland",
-                    city = "Warsaw",
-                    postal_code = "00-001",
-                    street = "Marszałkowska",
-                    building_number = "1",
-                    apartment_number = "21"
-                }
-            };
+            var studentDto = fixture.Create<StudentDto>();
 
             // Act
-            var studentDto = _mapper.Map<StudentDto>(student);
             await _studentService.AddStudentAsync(studentDto);
 
             // Assert
-            context.Students.Any(s => s.id == studentDto.Id).Should().BeTrue();
+            var addedStudent = context.Students.Include(s => s.address).FirstOrDefault(s => s.pesel == studentDto.Pesel);
+            addedStudent.Should().NotBeNull();
+            addedStudent.address.Should().NotBeNull();
         }
+
+        [Fact]
+        public async Task UpdateStudentAsync_StudentIsUpdated()
+        {
+            // Arrange
+            var studentDto = fixture.Create<StudentDto>();
+            await _studentService.AddStudentAsync(studentDto);
+
+            // Retrieve the student with no tracking
+            var updatedStudentDto = _mapper.Map<StudentDto>(await context.Students.AsNoTracking().FirstOrDefaultAsync(s => s.pesel == studentDto.Pesel));
+            updatedStudentDto.Name = "Ambroży"; 
+
+            // Act
+            await _studentService.UpdateStudentAsync(updatedStudentDto);
+
+            // Assert
+            var updatedStudent = await context.Students.FirstOrDefaultAsync(s => s.pesel == updatedStudentDto.Pesel);
+            updatedStudent.Should().NotBeNull();
+            updatedStudent.name.Should().Be("Ambroży");
+        }
+
+        [Fact]
+        public async Task DeleteStudentAsync_StudentIsDeleted()
+        {
+            // Arrange
+            var studentDto = fixture.Create<StudentDto>();
+            await _studentService.AddStudentAsync(studentDto);
+
+            // Act
+            await _studentService.DeleteStudentAsync(studentDto.Id);
+
+            // Assert
+            var deletedStudent = context.Students.FirstOrDefault(s => s.id == studentDto.Id);
+            deletedStudent.Should().BeNull();
+        }
+
     }
 }

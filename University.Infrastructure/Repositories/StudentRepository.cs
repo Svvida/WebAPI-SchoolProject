@@ -31,9 +31,18 @@ namespace University.Infrastructure.Repositories
         }
         public async Task UpdateStudentAsync(Students student)
         {
-            _context.Entry(student).State = EntityState.Modified;
+            var existingStudent = await _context.Students.FindAsync(student.id);
+            if (existingStudent != null)
+            {
+                _context.Entry(existingStudent).CurrentValues.SetValues(student);
+            }
+            else
+            {
+                _context.Students.Update(student);
+            }
             await _context.SaveChangesAsync();
         }
+
         public async Task AddStudentAsync(Students student)
         {
             _context.Students.Add(student);

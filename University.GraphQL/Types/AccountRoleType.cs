@@ -22,12 +22,12 @@ namespace University.GraphQL.Types
 
         private class AccountRoleResolver
         {
-            public Roles GetRole([Parent] Users_Accounts_Roles uar, [ScopedService] UniversityContext context)
+            public Roles GetRole([Parent] Users_Accounts_Roles uar, [Service(ServiceKind.Resolver)] UniversityContext context)
             {
                 return context.Roles.FirstOrDefault(r => r.id == uar.role_id);
             }
 
-            public Users_Accounts GetAccount([Parent] Users_Accounts_Roles uar, [ScopedService] UniversityContext context)
+            public Users_Accounts GetAccount([Parent] Users_Accounts_Roles uar, [Service(ServiceKind.Resolver)] UniversityContext context)
             {
                 return context.Accounts.FirstOrDefault(a => a.id == uar.account_id);
             }

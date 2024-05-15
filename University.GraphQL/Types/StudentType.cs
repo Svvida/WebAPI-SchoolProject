@@ -31,12 +31,12 @@ namespace University.GraphQL.Types
 
         private class StudentResolvers
         {
-            public Students_Addresses GetAddress([Parent] Students student, [ScopedService] UniversityContext context)
+            public Students_Addresses GetAddress([Parent] Students student, [Service(ServiceKind.Resolver)] UniversityContext context)
             {
                 return context.Addresses.FirstOrDefault(a => a.id == student.address_id);
             }
 
-            public Users_Accounts GetAccount([Parent] Students student, [ScopedService] UniversityContext context)
+            public Users_Accounts GetAccount([Parent] Students student, [Service(ServiceKind.Resolver)] UniversityContext context)
             {
                 return context.Accounts.FirstOrDefault(a => a.id == student.account_id);
             }

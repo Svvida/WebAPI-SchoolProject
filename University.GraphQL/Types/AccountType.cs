@@ -16,13 +16,13 @@ namespace University.GraphQL.Types
 
             descriptor.Field(ua => ua.roles)
                 .Type<AccountRoleType>()
-                .ResolveWith<AccountResolver>(r => r.GetUar)
+                .ResolveWith<AccountResolver>(r => r.GetUar(default, default))
                 .UseDbContext<UniversityContext>();
         }
 
         private class AccountResolver
         {
-            public Users_Accounts_Roles GetUar([Parent]  Users_Accounts account, [ScopedService] UniversityContext context)
+            public Users_Accounts_Roles GetUar([Parent] Users_Accounts account, [Service(ServiceKind.Resolver)] UniversityContext context)
             {
                 return context.UserAccountRoles.FirstOrDefault(uar => uar.account_id == account.id);
             }

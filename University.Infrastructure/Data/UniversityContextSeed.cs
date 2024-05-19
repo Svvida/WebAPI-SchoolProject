@@ -21,7 +21,6 @@ namespace University.Infrastructure.Data
             var martaRadzkaPassword = configuration["SeedPasswords:MartaRadzka"];
             var kamilNowakPassword = configuration["SeedPasswords:KamilNowak"];
 
-            // Seed roles and accounts to the databsae 
             if (!context.Roles.Any() || !context.Accounts.Any())
             {
                 var roles = new List<Roles>
@@ -43,7 +42,6 @@ namespace University.Infrastructure.Data
                     }
                 };
 
-
                 var usersAccounts = new List<Users_Accounts>
                 {
                     new Users_Accounts
@@ -59,7 +57,7 @@ namespace University.Infrastructure.Data
                         id = Guid.NewGuid(),
                         email = "jan.kowalski@wsei.pl",
                         login = "jan.kowalski",
-                        password = passwordHasher.HashPassword(null,janKowalskiPassword),
+                        password = passwordHasher.HashPassword(null, janKowalskiPassword),
                         is_active = true,
                     },
                     new Users_Accounts
@@ -75,7 +73,7 @@ namespace University.Infrastructure.Data
                         id = Guid.NewGuid(),
                         email = "kamil.nowak@wsei.pl",
                         login = "kamil.nowak",
-                        password = passwordHasher.HashPassword(null,kamilNowakPassword),
+                        password = passwordHasher.HashPassword(null, kamilNowakPassword),
                         is_active = true,
                     }
                 };
@@ -93,7 +91,6 @@ namespace University.Infrastructure.Data
             var studentRole = context.Roles.FirstOrDefault(r => r.name == "Student");
             var teacherRole = context.Roles.FirstOrDefault(r => r.name == "Teacher");
 
-            // Check if there are any accounts with roles in the database
             if (!context.UserAccountRoles.Any())
             {
                 var userAccountRoles = new List<Users_Accounts_Roles>
@@ -109,7 +106,7 @@ namespace University.Infrastructure.Data
                     {
                         account_id = janAccount.id,
                         account = janAccount,
-                        role_id= studentRole.id,
+                        role_id = studentRole.id,
                         role = studentRole
                     },
                     new Users_Accounts_Roles
@@ -132,7 +129,6 @@ namespace University.Infrastructure.Data
                 context.SaveChanges();
             }
 
-            // check if there is any student in database
             if (!context.Students.Any())
             {
                 var students = new List<Students>
@@ -147,6 +143,7 @@ namespace University.Infrastructure.Data
                         gender = Domain.Enums.Gender.Male,
                         address = new Students_Addresses
                         {
+                            id = SeedingConstants.TestAddressId,
                             country = "Poland",
                             city = "Kraków",
                             postal_code = "48-345",
@@ -159,7 +156,7 @@ namespace University.Infrastructure.Data
                     },
                     new Students
                     {
-                        id = Guid.NewGuid() ,
+                        id = Guid.NewGuid(),
                         name = "Marta",
                         surname = "Radzka",
                         date_of_birth = DateTime.Parse("2003-04-22"),
@@ -181,7 +178,7 @@ namespace University.Infrastructure.Data
 
                 context.AddRange(students);
                 context.SaveChanges();
-            };
+            }
         }
     }
 }

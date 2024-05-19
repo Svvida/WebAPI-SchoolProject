@@ -3,19 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "University.RestApi", "University.RestApi\University.RestApi.csproj", "{A2C1C33E-F5E4-4B17-B5C1-578AD6A83148}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.RestApi", "University.RestApi\University.RestApi.csproj", "{A2C1C33E-F5E4-4B17-B5C1-578AD6A83148}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "University.Domain", "University.Domain\University.Domain.csproj", "{E74F495A-45D8-4CBC-BED9-24C8CBFD8265}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.Domain", "University.Domain\University.Domain.csproj", "{E74F495A-45D8-4CBC-BED9-24C8CBFD8265}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "University.Application", "University.Application\University.Application.csproj", "{4367B1D1-0E4F-42B7-8471-4CA37A877836}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.Application", "University.Application\University.Application.csproj", "{4367B1D1-0E4F-42B7-8471-4CA37A877836}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "University.Infrastructure", "University.Infrastructure\University.Infrastructure.csproj", "{FA5E2E98-9438-424D-8887-20EEAF6DFC36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.Infrastructure", "University.Infrastructure\University.Infrastructure.csproj", "{FA5E2E98-9438-424D-8887-20EEAF6DFC36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "University.Tests", "University.Tests\University.Tests.csproj", "{0B210CEF-CFE7-4743-8464-D889FF3A7B2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.Tests", "University.Tests\University.Tests.csproj", "{0B210CEF-CFE7-4743-8464-D889FF3A7B2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "University.GraphQL", "University.GraphQL\University.GraphQL.csproj", "{4D9EE3F8-A6E9-410F-8970-6843710778D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.GraphQL", "University.GraphQL\University.GraphQL.csproj", "{4D9EE3F8-A6E9-410F-8970-6843710778D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "University.RazorPages", "University.RazorPages\University.RazorPages.csproj", "{F60D0413-3F7D-4CDF-9A5E-40F67E6706CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.RazorPages", "University.RazorPages\University.RazorPages.csproj", "{F60D0413-3F7D-4CDF-9A5E-40F67E6706CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F4BD3673-7536-42BA-BF2D-504B4EFB9852}"
+	ProjectSection(SolutionItems) = preProject
+		cURL_tests.sh = cURL_tests.sh
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-﻿using System.Security;
+﻿using System.Linq.Expressions;
 using University.Domain.Entities;
 using University.GraphQL.Queries;
 using University.Infrastructure.Data;
@@ -14,31 +14,40 @@ namespace University.GraphQL.Schemas
         private readonly AccountRoleQuery _accountRoleQuery = new AccountRoleQuery();
 
         // Student Queries
-        public IQueryable<Students> AllStudents([Service] UniversityContext conetxt) =>
-            _studentQuery.GetStudents(conetxt);
-        public IQueryable<Students> StudentByField(string field,string value, [Service] UniversityContext conetxt) =>
-            _studentQuery.GetStudentByField(field,value, conetxt);
+        [GraphQLName("allStudents")]
+        public IQueryable<Students> GetAllStudents([Service] UniversityContext context) =>
+            _studentQuery.GetStudents(context);
+
+        [GraphQLName("studentByField")]
+        public IQueryable<Students> GetStudentByField(string field, string value, [Service] UniversityContext context) =>
+            _studentQuery.GetStudentByField(field, value, context);
 
         // Address Queries
-        public IQueryable<Students_Addresses> AllAddresses([Service] UniversityContext conetxt) =>
-            _addressQuery.GetAllAddresses(conetxt);
+        [GraphQLName("allAddresses")]
+        public IQueryable<Students_Addresses> GetAllAddresses([Service] UniversityContext context) =>
+            _addressQuery.GetAllAddresses(context);
 
-        public IQueryable<Students_Addresses> AddressByField(string field, string value,[Service] UniversityContext context) =>
+        [GraphQLName("addressByField")]
+        public IQueryable<Students_Addresses> GetAddressByField(string field, string value, [Service] UniversityContext context) =>
             _addressQuery.GetAddressByField(field, value, context);
 
         // Account Queries
-        public IQueryable<Users_Accounts> AllAccounts([Service] UniversityContext conetxt) =>
-            conetxt.Accounts;
+        [GraphQLName("allAccounts")]
+        public IQueryable<Users_Accounts> GetAllAccounts([Service] UniversityContext context) =>
+            _accountQuery.GetAllAccounts(context);
 
-        public IQueryable<Users_Accounts> AccountByField(string field, string value,[Service] UniversityContext context) =>
+        [GraphQLName("accountByField")]
+        public IQueryable<Users_Accounts> GetAccountByField(string field, string value, [Service] UniversityContext context) =>
             _accountQuery.GetAccountByField(field, value, context);
 
         // Role Queries
-        public IQueryable<Roles> AllRoles([Service] UniversityContext conetxt) =>
-            _roleQuery.GetAllRoles(conetxt);
+        [GraphQLName("allRoles")]
+        public IQueryable<Roles> GetAllRoles([Service] UniversityContext context) =>
+            _roleQuery.GetAllRoles(context);
 
         // AccountRole Queries
-        public IQueryable<Users_Accounts_Roles> AllAccountsWithRoles([Service] UniversityContext conetxt) =>
-            _accountRoleQuery.GetAllAccountsWithRoles(conetxt);
+        [GraphQLName("allAccountsWithRoles")]
+        public IQueryable<Users_Accounts_Roles> GetAllAccountsWithRoles([Service] UniversityContext context) =>
+            _accountRoleQuery.GetAllAccountsWithRoles(context);
     }
 }

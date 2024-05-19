@@ -5,14 +5,15 @@ namespace University.GraphQL.Schemas
 {
     public static class AppType
     {
-        public static void RegisterTypes(this IRequestExecutorBuilder builder)
+        public static IRequestExecutorBuilder RegisterTypes(this IRequestExecutorBuilder builder)
         {
-            builder.AddType<AccountRoleType>();
-            builder.AddType<RoleType>();
-            builder.AddType<AccountType>();
-            builder.AddType<StudentType>();
-            builder.AddType<AddressType>();
-            builder.AddType<GenderType>();
+            return builder
+                .AddType<AccountRoleType>()
+                .AddType<RoleType>()
+                .AddType<AccountType>()
+                .AddType<StudentType>()
+                .AddType<AddressType>()
+                .AddType<GenderType>();
         }
     }
 }

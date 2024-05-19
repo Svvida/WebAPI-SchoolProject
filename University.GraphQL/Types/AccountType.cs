@@ -1,4 +1,7 @@
-﻿using University.Domain.Entities;
+﻿using HotChocolate;
+using HotChocolate.Types;
+using Microsoft.EntityFrameworkCore;
+using University.Domain.Entities;
 using University.Infrastructure.Data;
 
 namespace University.GraphQL.Types
@@ -15,16 +18,17 @@ namespace University.GraphQL.Types
             descriptor.Field(ua => ua.deactivation_date).Type<DateType>();
 
             descriptor.Field(ua => ua.roles)
-                .Type<AccountRoleType>()
-                .ResolveWith<AccountResolver>(r => r.GetUar(default, default))
+                .Type<ListType<AccountRoleType>>()
+                .ResolveWith<AccountResolver>(r => r.GetUar(default!, default!))
                 .UseDbContext<UniversityContext>();
         }
 
         private class AccountResolver
         {
-            public Users_Accounts_Roles GetUar([Parent] Users_Accounts account, [Service(ServiceKind.Resolver)] UniversityContext context)
+            public IQueryable<Users_Accounts_Roles> GetUar([Parent] Users_Accounts account, [Service] IDbContextFactory<UniversityContext> dbContextFactory)
             {
-                return context.UserAccountRoles.FirstOrDefault(uar => uar.account_id == account.id);
+                using var context = dbContextFactory.CreateDbContext();
+                return context.UserAccountRoles.Where(uar => uar.account_id == account.id);
             }
         }
     }

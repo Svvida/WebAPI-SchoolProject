@@ -21,12 +21,14 @@ namespace University.Infrastructure.Data
             modelBuilder.Entity<Users_Accounts_Roles>()
                 .HasOne(uar => uar.account)
                 .WithMany(ua => ua.roles)
-                .HasForeignKey(uar => uar.account_id);
+                .HasForeignKey(uar => uar.account_id)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Users_Accounts_Roles>()
                 .HasOne(uar => uar.role)
                 .WithMany(r => r.accounts)
-                .HasForeignKey(uar => uar.role_id);
+                .HasForeignKey(uar => uar.role_id)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Students>()
                 .HasOne(s => s.address)

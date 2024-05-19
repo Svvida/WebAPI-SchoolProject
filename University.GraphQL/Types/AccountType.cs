@@ -10,14 +10,14 @@ namespace University.GraphQL.Types
     {
         protected override void Configure(IObjectTypeDescriptor<Users_Accounts> descriptor)
         {
-            descriptor.Field(ua => ua.id).Type<NonNullType<IdType>>();
-            descriptor.Field(ua => ua.email).Type<NonNullType<StringType>>();
-            descriptor.Field(ua => ua.login).Type<NonNullType<StringType>>();
-            descriptor.Field(ua => ua.password).Type<NonNullType<StringType>>();
-            descriptor.Field(ua => ua.is_active).Type<NonNullType<BooleanType>>();
-            descriptor.Field(ua => ua.deactivation_date).Type<DateType>();
+            descriptor.Field(ua => ua.Id).Type<NonNullType<IdType>>();
+            descriptor.Field(ua => ua.Email).Type<NonNullType<StringType>>();
+            descriptor.Field(ua => ua.Login).Type<NonNullType<StringType>>();
+            descriptor.Field(ua => ua.Password).Type<NonNullType<StringType>>();
+            descriptor.Field(ua => ua.IsActive).Type<NonNullType<BooleanType>>();
+            descriptor.Field(ua => ua.DeactivationDate).Type<DateType>();
 
-            descriptor.Field(ua => ua.roles)
+            descriptor.Field(ua => ua.Roles)
                 .Type<ListType<AccountRoleType>>()
                 .ResolveWith<AccountResolver>(r => r.GetUar(default!, default!))
                 .UseDbContext<UniversityContext>();
@@ -28,7 +28,7 @@ namespace University.GraphQL.Types
             public IQueryable<Users_Accounts_Roles> GetUar([Parent] Users_Accounts account, [Service] IDbContextFactory<UniversityContext> dbContextFactory)
             {
                 using var context = dbContextFactory.CreateDbContext();
-                return context.UserAccountRoles.Where(uar => uar.account_id == account.id);
+                return context.UserAccountRoles.Where(uar => uar.AccountId == account.Id);
             }
         }
     }

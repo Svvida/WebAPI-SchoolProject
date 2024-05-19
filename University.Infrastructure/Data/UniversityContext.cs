@@ -16,24 +16,24 @@ namespace University.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Users_Accounts_Roles>()
-                .HasKey(uar => new { uar.account_id, uar.role_id });
+                .HasKey(uar => new { uar.AccountId, uar.RoleId });
 
             modelBuilder.Entity<Users_Accounts_Roles>()
-                .HasOne(uar => uar.account)
-                .WithMany(ua => ua.roles)
-                .HasForeignKey(uar => uar.account_id)
+                .HasOne(uar => uar.Account)
+                .WithMany(ua => ua.Roles)
+                .HasForeignKey(uar => uar.AccountId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Users_Accounts_Roles>()
-                .HasOne(uar => uar.role)
-                .WithMany(r => r.accounts)
-                .HasForeignKey(uar => uar.role_id)
+                .HasOne(uar => uar.Role)
+                .WithMany(r => r.Accounts)
+                .HasForeignKey(uar => uar.RoleId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Students>()
-                .HasOne(s => s.address)
+                .HasOne(s => s.Address)
                 .WithOne()
-                .HasForeignKey<Students>(s => s.address_id)
+                .HasForeignKey<Students>(s => s.AddressId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

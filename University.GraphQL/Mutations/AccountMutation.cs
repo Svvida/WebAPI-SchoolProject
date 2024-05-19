@@ -25,11 +25,11 @@ namespace University.GraphQL.Mutations
         {
             var account = new Users_Accounts
             {
-                id = Guid.NewGuid(),
-                email = input.Email,
-                login = input.Login,
-                password = input.Password,  // Assume password is already hashed
-                is_active = input.IsActive
+                Id = Guid.NewGuid(),
+                Email = input.Email,
+                Login = input.Login,
+                Password = input.Password,  // Assume password is already hashed
+                IsActive = input.IsActive
             };
 
             context.Accounts.Add(account);
@@ -45,9 +45,9 @@ namespace University.GraphQL.Mutations
                 throw new Exception($"Account with ID {input.Id} not found");
             }
 
-            account.email = input.Email;
-            account.login = input.Login;
-            account.is_active = input.IsActive;
+            account.Email = input.Email;
+            account.Login = input.Login;
+            account.IsActive = input.IsActive;
 
             context.Accounts.Update(account);
             await context.SaveChangesAsync();
@@ -83,8 +83,8 @@ namespace University.GraphQL.Mutations
 
             var accountRole = new Users_Accounts_Roles
             {
-                account_id = accountId,
-                role_id = roleId
+                AccountId = accountId,
+                RoleId = roleId
             };
 
             context.UserAccountRoles.Add(accountRole);

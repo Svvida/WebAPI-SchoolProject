@@ -25,11 +25,11 @@ namespace University.Application.Services
 
             return accounts.Select(a => new AccountDto
             {
-                Id = a.id,
-                Email = a.email,
-                Login = a.login,
-                IsActive = a.is_active,
-                DeactivationDate = a.deactivation_date
+                Id = a.Id,
+                Email = a.Email,
+                Login = a.Login,
+                IsActive = a.IsActive,
+                DeactivationDate = a.DeactivationDate
             });
         }
 
@@ -55,7 +55,7 @@ namespace University.Application.Services
             _mapper.Map(accountDto, accountEntity);
             if(!string.IsNullOrWhiteSpace(accountDto.Password))
             {
-                accountEntity.password = _passwordHasher.HashPassword(accountEntity, accountDto.Password);
+                accountEntity.Password = _passwordHasher.HashPassword(accountEntity, accountDto.Password);
             }
 
             await _accountRepository.UpdateAsync(accountEntity);
@@ -76,7 +76,7 @@ namespace University.Application.Services
         {
             var accountEntity = _mapper.Map<Users_Accounts>(accountDto);
             // Hash password before saving it to the database
-            accountEntity.password = _passwordHasher.HashPassword(accountEntity, accountDto.Password);
+            accountEntity.Password = _passwordHasher.HashPassword(accountEntity, accountDto.Password);
             await _accountRepository.AddAsync(accountEntity);
         }
     }

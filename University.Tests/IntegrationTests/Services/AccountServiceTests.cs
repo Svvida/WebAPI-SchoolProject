@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using University.Application.DTOs;
 using University.Application.Mappers;
@@ -13,21 +12,20 @@ using University.Infrastructure.Repositories;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using University.Infrastructure.Data;
+using Xunit;
 
 namespace University.Tests.IntegrationTests.Services
 {
     public class AccountServiceTests : IntegrationTestBase
     {
         private readonly AccountService _accountService;
-        private readonly IMapper _mapper;
-        private readonly PasswordHasher<Users_Accounts> _passwordHasher;
+        private readonly IPasswordHasher<Users_Accounts> _passwordHasher;
 
         public AccountServiceTests() : base() // call base constructor to setup context
         {
             var accountRepository = new AccountRepository(context);
-            _mapper = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())).CreateMapper();
             _passwordHasher = new PasswordHasher<Users_Accounts>();
-            _accountService = new AccountService(accountRepository, _mapper, _passwordHasher);
+            _accountService = new AccountService(accountRepository, mapper, _passwordHasher);
         }
 
         [Fact]
@@ -39,14 +37,14 @@ namespace University.Tests.IntegrationTests.Services
 
             // Act
             var account = await context.Accounts
-                .Include(a => a.roles)
-                .ThenInclude(r => r.role)
-                .FirstOrDefaultAsync(a => a.id == expectedAccountId);
+                .Include(a => a.Roles)
+                .ThenInclude(r => r.Role)
+                .FirstOrDefaultAsync(a => a.Id == expectedAccountId);
 
             // Assert
             account.Should().NotBeNull();
-            account.roles.Should().ContainSingle();
-            account.roles[0].role_id.Should().Be(expectedRoleId);
+            account.Roles.Should().ContainSingle();
+            account.Roles[0].RoleId.Should().Be(expectedRoleId);
         }
 
         [Fact]
@@ -61,9 +59,9 @@ namespace University.Tests.IntegrationTests.Services
                 Password = "SecurePassword123",
                 IsActive = true,
                 Roles = new List<RoleDto>
-        {
-            new RoleDto { Id = SeedingConstants.StudentRoleId, Name = "Student" }
-        }
+                {
+                    new RoleDto { Id = SeedingConstants.StudentRoleId, Name = "Student" }
+                }
             };
 
             // Act
@@ -71,15 +69,14 @@ namespace University.Tests.IntegrationTests.Services
 
             // Assert
             var createdAccount = await context.Accounts
-                .Include(a => a.roles)
-                .ThenInclude(r => r.role)
-                .SingleOrDefaultAsync(a => a.id == newUser.Id);
+                .Include(a => a.Roles)
+                .ThenInclude(r => r.Role)
+                .SingleOrDefaultAsync(a => a.Id == newUser.Id);
 
             createdAccount.Should().NotBeNull("because the account should be created successfully.");
-            createdAccount.roles.Should().ContainSingle();
-            createdAccount.roles[0].role_id.Should().Be(SeedingConstants.StudentRoleId, "because the new user should be assigned the 'Student' role.");
-            createdAccount.roles[0].role.name.Should().Be("Student", "because the correct role should be linked.");
+            createdAccount.Roles.Should().ContainSingle();
+            createdAccount.Roles[0].RoleId.Should().Be(SeedingConstants.StudentRoleId, "because the new user should be assigned the 'Student' role.");
+            createdAccount.Roles[0].Role.Name.Should().Be("Student", "because the correct role should be linked.");
         }
-
     }
 }

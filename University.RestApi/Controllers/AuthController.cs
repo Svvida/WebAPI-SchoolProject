@@ -60,8 +60,8 @@ namespace University.RestApi.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.id.ToString()),
-                    new Claim(ClaimTypes.Name, user.login)
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.Login)
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 Issuer = issuer,

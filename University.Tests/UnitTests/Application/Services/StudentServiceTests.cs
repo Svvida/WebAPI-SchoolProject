@@ -59,7 +59,7 @@ namespace University.Tests.UnitTests.Application.Services
         {
             // Arrange
             var studentId = Guid.NewGuid();
-            var student = studentExist ? new Students { id = studentId, name= "Marcin" } : null;
+            var student = studentExist ? new Students { Id = studentId, Name= "Marcin" } : null;
             var studentDto = studentExist ? new StudentDto { Id = studentId, Name = "Marcin" } : null;
 
             mockRepo.Setup(repo=> repo.GetStudentByIdAsync(studentId))

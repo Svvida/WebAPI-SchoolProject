@@ -44,25 +44,25 @@ namespace University.GraphQL.Mutations
         {
             var address = new Students_Addresses
             {
-                id = Guid.NewGuid(),
-                country = input.Country,
-                city = input.City,
-                postal_code = input.PostalCode,
-                street = input.Street,
-                building_number = input.BuildingNumber,
-                apartment_number = input.ApartmentNumber
+                Id = Guid.NewGuid(),
+                Country = input.Country,
+                City = input.City,
+                PostalCode = input.PostalCode,
+                Street = input.Street,
+                BuildingNumber = input.BuildingNumber,
+                ApartmentNumber = input.ApartmentNumber
             };
 
             var student = new Students
             {
-                id = Guid.NewGuid(),
-                name = input.Name,
-                surname = input.Surname,
-                date_of_birth = input.DateOfBirth,
-                pesel = input.Pesel,
-                gender = input.Gender,
-                address = address,
-                account_id = input.AccountId
+                Id = Guid.NewGuid(),
+                Name = input.Name,
+                Surname = input.Surname,
+                DateOfBirth = input.DateOfBirth,
+                Pesel = input.Pesel,
+                Gender = input.Gender,
+                Address = address,
+                AccountId = input.AccountId
             };
 
             context.Students.Add(student);
@@ -72,25 +72,25 @@ namespace University.GraphQL.Mutations
 
         public async Task<Students> UpdateStudentAsync(UpdateStudentInput input, [Service] UniversityContext context)
         {
-            var student = await context.Students.Include(s => s.address).FirstOrDefaultAsync(s => s.id == input.Id);
+            var student = await context.Students.Include(s => s.Address).FirstOrDefaultAsync(s => s.Id == input.Id);
             if (student == null)
             {
                 throw new Exception($"Student with ID {input.Id} not found");
             }
 
-            student.name = input.Name;
-            student.surname = input.Surname;
-            student.date_of_birth = input.DateOfBirth;
-            student.pesel = input.Pesel;
-            student.gender = input.Gender;
-            student.account_id = input.AccountId;
+            student.Name = input.Name;
+            student.Surname = input.Surname;
+            student.DateOfBirth = input.DateOfBirth;
+            student.Pesel = input.Pesel;
+            student.Gender = input.Gender;
+            student.AccountId = input.AccountId;
 
-            student.address.country = input.Country;
-            student.address.city = input.City;
-            student.address.postal_code = input.PostalCode;
-            student.address.street = input.Street;
-            student.address.building_number = input.BuildingNumber;
-            student.address.apartment_number = input.ApartmentNumber;
+            student.Address.Country = input.Country;
+            student.Address.City = input.City;
+            student.Address.PostalCode = input.PostalCode;
+            student.Address.Street = input.Street;
+            student.Address.BuildingNumber = input.BuildingNumber;
+            student.Address.ApartmentNumber = input.ApartmentNumber;
 
             context.Students.Update(student);
             await context.SaveChangesAsync();

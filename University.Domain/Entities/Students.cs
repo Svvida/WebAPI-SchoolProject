@@ -1,36 +1,51 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using University.Domain.Enums;
 
 namespace University.Domain.Entities
 {
     public class Students
     {
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [StringLength(55, MinimumLength = 2)]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [StringLength(55, MinimumLength = 2)]
-        public string surname { get; set; }
+        public string Surname { get; set; }
 
         [Required]
-        public DateTime date_of_birth { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         [Required]
         [StringLength(11)]
         [RegularExpression(@"^\d{11}$")]
-        public string pesel { get; set; }
+        public string Pesel { get; set; }
 
-        // Enum defined in other folder
-        public Gender gender { get; set; }
+        // Enum defined in another folder
+        public Gender Gender { get; set; }
 
         // Relations
-        public Guid? address_id { get; set; }
-        public Students_Addresses? address { get; set; } // Navigation property
+        public Guid? AddressId { get; set; }
+        public Students_Addresses? Address { get; set; } // Navigation property
 
-        public Guid? account_id { get; set; }
-        public Users_Accounts? account { get; set; }
+        public Guid? AccountId { get; set; }
+        public Users_Accounts? Account { get; set; }
+
+        // Example business logic
+        public int CalculateAge()
+        {
+            var today = DateTime.Today;
+            var age = today.Year - DateOfBirth.Year;
+            if (DateOfBirth.Date > today.AddYears(-age)) age--;
+            return age;
+        }
+
+        public void ChangeAddress(Students_Addresses newAddress)
+        {
+            Address = newAddress ?? throw new ArgumentNullException(nameof(newAddress));
+        }
     }
 }

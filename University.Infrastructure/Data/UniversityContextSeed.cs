@@ -24,72 +24,74 @@ namespace University.Infrastructure.Data
             if (!context.Roles.Any() || !context.Accounts.Any())
             {
                 var roles = new List<Roles>
-                {
-                    new Roles
-                    {
-                        id = SeedingConstants.AdminRoleId,
-                        name = "Admin"
-                    },
-                    new Roles
-                    {
-                        id = SeedingConstants.StudentRoleId,
-                        name = "Student"
-                    },
-                    new Roles
-                    {
-                        id = SeedingConstants.TeacherRoleId,
-                        name = "Teacher"
-                    }
-                };
+    {
+        new Roles
+        {
+            Id = SeedingConstants.AdminRoleId,
+            Name = "Admin"
+        },
+        new Roles
+        {
+            Id = SeedingConstants.StudentRoleId,
+            Name = "Student"
+        },
+        new Roles
+        {
+            Id = SeedingConstants.TeacherRoleId,
+            Name = "Teacher"
+        }
+    };
 
                 var usersAccounts = new List<Users_Accounts>
-                {
-                    new Users_Accounts
-                    {
-                        id = SeedingConstants.AdminAccountId,
-                        email = "admin@wsei.pl",
-                        login = "admin",
-                        password = passwordHasher.HashPassword(null, adminPassword),
-                        is_active = true,
-                    },
-                    new Users_Accounts
-                    {
-                        id = Guid.NewGuid(),
-                        email = "jan.kowalski@wsei.pl",
-                        login = "jan.kowalski",
-                        password = passwordHasher.HashPassword(null, janKowalskiPassword),
-                        is_active = true,
-                    },
-                    new Users_Accounts
-                    {
-                        id = Guid.NewGuid(),
-                        email = "marta.radzka@wsei.pl",
-                        login = "marta.radzka",
-                        password = passwordHasher.HashPassword(null, martaRadzkaPassword),
-                        is_active = true,
-                    },
-                    new Users_Accounts
-                    {
-                        id = Guid.NewGuid(),
-                        email = "kamil.nowak@wsei.pl",
-                        login = "kamil.nowak",
-                        password = passwordHasher.HashPassword(null, kamilNowakPassword),
-                        is_active = true,
-                    }
-                };
+    {
+        new Users_Accounts
+        {
+            Id = SeedingConstants.AdminAccountId,
+            Email = "admin@wsei.pl",
+            Login = "admin",
+            Password = passwordHasher.HashPassword(null, adminPassword),
+            IsActive = true,
+        },
+        new Users_Accounts
+        {
+            Id = Guid.NewGuid(),
+            Email = "jan.kowalski@wsei.pl",
+            Login = "jan.kowalski",
+            Password = passwordHasher.HashPassword(null, janKowalskiPassword),
+            IsActive = true,
+        },
+        new Users_Accounts
+        {
+            Id = Guid.NewGuid(),
+            Email = "marta.radzka@wsei.pl",
+            Login = "marta.radzka",
+            Password = passwordHasher.HashPassword(null, martaRadzkaPassword),
+            IsActive = true,
+        },
+        new Users_Accounts
+        {
+            Id = Guid.NewGuid(),
+            Email = "kamil.nowak@wsei.pl",
+            Login = "kamil.nowak",
+            Password = passwordHasher.HashPassword(null, kamilNowakPassword),
+            IsActive = true,
+        }
+    };
+
                 context.AddRange(usersAccounts);
                 context.AddRange(roles);
                 context.SaveChanges();
             }
 
-            var adminAccount = context.Accounts.FirstOrDefault(a => a.login == "admin");
-            var janAccount = context.Accounts.FirstOrDefault(a => a.login == "jan.kowalski");
-            var martaAccount = context.Accounts.FirstOrDefault(a => a.login == "marta.radzka");
-            var kamilAccount = context.Accounts.FirstOrDefault(a => a.login == "kamil.nowak");
 
-            var adminRole = context.Roles.FirstOrDefault(r => r.name == "Admin");
-            var studentRole = context.Roles.FirstOrDefault(r => r.name == "Student");
-            var teacherRole = context.Roles.FirstOrDefault(r => r.name == "Teacher");
+            var adminAccount = context.Accounts.FirstOrDefault(a => a.Login == "admin");
+            var janAccount = context.Accounts.FirstOrDefault(a => a.Login == "jan.kowalski");
+            var martaAccount = context.Accounts.FirstOrDefault(a => a.Login == "marta.radzka");
+            var kamilAccount = context.Accounts.FirstOrDefault(a => a.Login == "kamil.nowak");
+
+            var adminRole = context.Roles.FirstOrDefault(r => r.Name == "Admin");
+            var studentRole = context.Roles.FirstOrDefault(r => r.Name == "Student");
+            var teacherRole = context.Roles.FirstOrDefault(r => r.Name == "Teacher");
 
             if (!context.UserAccountRoles.Any())
             {
@@ -97,31 +99,31 @@ namespace University.Infrastructure.Data
                 {
                     new Users_Accounts_Roles
                     {
-                        account_id = adminAccount.id,
-                        account = adminAccount,
-                        role_id = adminRole.id,
-                        role = adminRole
+                        AccountId = adminAccount.Id,
+                        Account = adminAccount,
+                        RoleId = adminRole.Id,
+                        Role = adminRole
                     },
                     new Users_Accounts_Roles
                     {
-                        account_id = janAccount.id,
-                        account = janAccount,
-                        role_id = studentRole.id,
-                        role = studentRole
+                        AccountId = janAccount.Id,
+                        Account = janAccount,
+                        RoleId = studentRole.Id,
+                        Role = studentRole
                     },
                     new Users_Accounts_Roles
                     {
-                        account_id = martaAccount.id,
-                        account = martaAccount,
-                        role_id = studentRole.id,
-                        role = studentRole
+                        AccountId = martaAccount.Id,
+                        Account = martaAccount,
+                        RoleId = studentRole.Id,
+                        Role = studentRole
                     },
                     new Users_Accounts_Roles
                     {
-                        account_id = kamilAccount.id,
-                        account = kamilAccount,
-                        role_id = teacherRole.id,
-                        role = teacherRole
+                        AccountId = kamilAccount.Id,
+                        Account = kamilAccount,
+                        RoleId = teacherRole.Id,
+                        Role = teacherRole
                     }
                 };
 
@@ -132,53 +134,55 @@ namespace University.Infrastructure.Data
             if (!context.Students.Any())
             {
                 var students = new List<Students>
-                {
-                    new Students
-                    {
-                        id = Guid.NewGuid(),
-                        name = "Jan",
-                        surname = "Kowalski",
-                        date_of_birth = DateTime.Parse("2002-12-08"),
-                        pesel = "12345678901",
-                        gender = Domain.Enums.Gender.Male,
-                        address = new Students_Addresses
-                        {
-                            id = SeedingConstants.TestAddressId,
-                            country = "Poland",
-                            city = "Kraków",
-                            postal_code = "48-345",
-                            street = "Motylowa",
-                            building_number = "12",
-                            apartment_number = "10"
-                        },
-                        account_id = janAccount.id,
-                        account = janAccount
-                    },
-                    new Students
-                    {
-                        id = Guid.NewGuid(),
-                        name = "Marta",
-                        surname = "Radzka",
-                        date_of_birth = DateTime.Parse("2003-04-22"),
-                        pesel = "98765432100",
-                        gender = Domain.Enums.Gender.Female,
-                        address = new Students_Addresses
-                        {
-                            country = "Poland",
-                            city = "Olkusz",
-                            postal_code = "32-300",
-                            street = "Basztowa",
-                            building_number = "12",
-                            apartment_number = "12"
-                        },
-                        account_id = martaAccount.id,
-                        account = martaAccount
-                    }
-                };
+    {
+        new Students
+        {
+            Id = Guid.NewGuid(),
+            Name = "Jan",
+            Surname = "Kowalski",
+            DateOfBirth = DateTime.Parse("2002-12-08"),
+            Pesel = "12345678901",
+            Gender = Domain.Enums.Gender.Male,
+            Address = new Students_Addresses
+            {
+                Id = SeedingConstants.TestAddressId,
+                Country = "Poland",
+                City = "Kraków",
+                PostalCode = "48-345",
+                Street = "Motylowa",
+                BuildingNumber = "12",
+                ApartmentNumber = "10"
+            },
+            AccountId = janAccount.Id,
+            Account = janAccount
+        },
+        new Students
+        {
+            Id = Guid.NewGuid(),
+            Name = "Marta",
+            Surname = "Radzka",
+            DateOfBirth = DateTime.Parse("2003-04-22"),
+            Pesel = "98765432100",
+            Gender = Domain.Enums.Gender.Female,
+            Address = new Students_Addresses
+            {
+                Id = Guid.NewGuid(), // You should define an ID here as well
+                Country = "Poland",
+                City = "Olkusz",
+                PostalCode = "32-300",
+                Street = "Basztowa",
+                BuildingNumber = "12",
+                ApartmentNumber = "12"
+            },
+            AccountId = martaAccount.Id,
+            Account = martaAccount
+        }
+    };
 
                 context.AddRange(students);
                 context.SaveChanges();
             }
+
         }
     }
 }

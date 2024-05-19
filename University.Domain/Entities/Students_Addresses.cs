@@ -1,22 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace University.Domain.Entities
 {
     public class Students_Addresses
     {
         [Required]
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
         [Required]
-        public string country { get; set; }
+        public string Country { get; set; }
+
         [Required]
-        public string city { get; set; }
+        public string City { get; set; }
+
         [Required]
-        public string postal_code { get; set; }
+        public string PostalCode { get; set; }
+
         [Required]
-        public string street { get; set; }
+        public string Street { get; set; }
+
         [Required]
-        public string building_number { get; set; }
+        public string BuildingNumber { get; set; }
+
         [Required]
-        public string apartment_number { get; set; }
+        public string ApartmentNumber { get; set; }
     }
 }

@@ -53,7 +53,7 @@ namespace University.Application.Services
                 throw new KeyNotFoundException("Student not found");
             }
 
-            await _studentRepository.DeleteStudentAsync(student.id);
+            await _studentRepository.DeleteStudentAsync(student.Id);
         }
     }
 }

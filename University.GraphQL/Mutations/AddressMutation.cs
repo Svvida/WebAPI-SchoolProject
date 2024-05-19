@@ -24,12 +24,12 @@ namespace University.GraphQL.Mutations
                 throw new Exception($"Address with ID {input.Id} not found");
             }
 
-            address.country = input.Country;
-            address.city = input.City;
-            address.postal_code = input.PostalCode;
-            address.street = input.Street;
-            address.building_number = input.BuildingNumber;
-            address.apartment_number = input.ApartmentNumber;
+            address.Country = input.Country;
+            address.City = input.City;
+            address.PostalCode = input.PostalCode;
+            address.Street = input.Street;
+            address.BuildingNumber = input.BuildingNumber;
+            address.ApartmentNumber = input.ApartmentNumber;
 
             context.Addresses.Update(address);
             await context.SaveChangesAsync();

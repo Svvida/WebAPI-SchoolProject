@@ -15,7 +15,7 @@ namespace University.Infrastructure.Repositories
         public async Task<IEnumerable<Students>> GetAllStudentsAsync()
         {
             return await _context.Students
-                .Include(s=>s.address)
+                .Include(s=>s.Address)
                 .ToListAsync();
         }
         public async Task<Students> GetStudentByIdAsync(Guid id)
@@ -31,7 +31,7 @@ namespace University.Infrastructure.Repositories
         }
         public async Task UpdateStudentAsync(Students student)
         {
-            var existingStudent = await _context.Students.FindAsync(student.id);
+            var existingStudent = await _context.Students.FindAsync(student.Id);
             if (existingStudent != null)
             {
                 _context.Entry(existingStudent).CurrentValues.SetValues(student);

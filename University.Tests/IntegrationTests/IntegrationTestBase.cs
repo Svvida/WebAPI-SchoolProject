@@ -5,6 +5,8 @@ using University.Domain.Entities;
 using University.Infrastructure.Data;
 using Microsoft.Extensions.Configuration;
 using AutoFixture;
+using University.Application.Mappers;
+using AutoMapper;
 
 namespace University.Tests.IntegrationTests
 {
@@ -13,7 +15,7 @@ namespace University.Tests.IntegrationTests
         protected readonly UniversityContext context;
         private readonly Mock<IConfiguration> mockConfiguration;
         protected readonly Fixture fixture;
-
+        protected readonly IMapper mapper;
 
         public IntegrationTestBase()
         {
@@ -35,8 +37,11 @@ namespace University.Tests.IntegrationTests
 
             var passwordHasher = new PasswordHasher<Users_Accounts?>();
 
-            // Seed roles and accounts to the databsae
+            // Seed roles and accounts to the database
             UniversityContextSeed.Initialize(context, passwordHasher, mockConfiguration.Object);
+
+            // Configure Mapper
+            mapper = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())).CreateMapper();
         }
 
         private void setUpConfiguration()

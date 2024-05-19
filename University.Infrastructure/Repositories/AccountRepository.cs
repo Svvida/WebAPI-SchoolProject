@@ -58,7 +58,7 @@ namespace University.Infrastructure.Repositories
             }
 
             var isRelationExist = await _context.UserAccountRoles
-                .AnyAsync(uar => uar.role_id == roleId && uar.account_id == userId);
+                .AnyAsync(uar => uar.RoleId == roleId && uar.AccountId == userId);
             if (isRelationExist)
             {
                 throw new Exception("User already has this role");
@@ -66,8 +66,8 @@ namespace University.Infrastructure.Repositories
 
             var accountRole = new Users_Accounts_Roles
             {
-                account_id = userId,
-                role_id = roleId,
+                AccountId = userId,
+                RoleId = roleId,
             };
             _context.UserAccountRoles.Add(accountRole);
 
@@ -77,7 +77,7 @@ namespace University.Infrastructure.Repositories
         public async Task DeleteRoleFromAccountAsync(Guid userId, Guid roleId)
         {
             var accountRole = await _context.UserAccountRoles
-                .FirstOrDefaultAsync(uar => uar.account_id == userId && uar.role_id == roleId);
+                .FirstOrDefaultAsync(uar => uar.RoleId == userId && uar.AccountId == roleId);
 
             if (accountRole is null)
             {
@@ -94,7 +94,7 @@ namespace University.Infrastructure.Repositories
             if (login == null) throw new KeyNotFoundException("There is no student with that login");
 
             return await _context.Accounts
-                .Where(a => a.login == login)
+                .Where(a => a.Login == login)
                 .FirstOrDefaultAsync();
         }
     }

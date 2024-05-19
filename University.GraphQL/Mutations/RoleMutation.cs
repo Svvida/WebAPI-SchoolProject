@@ -14,8 +14,8 @@ namespace University.GraphQL.Mutations
         {
             var role = new Roles
             {
-                id = Guid.NewGuid(),
-                name = input.Name
+                Id = Guid.NewGuid(),
+                Name = input.Name
             };
 
             context.Roles.Add(role);
@@ -38,7 +38,7 @@ namespace University.GraphQL.Mutations
             var role = await context.Roles.FindAsync(id);
             if (role == null) throw new Exception("Role not found");
 
-            role.name = name;
+            role.Name = name;
             await context.SaveChangesAsync();
             return role;
         }

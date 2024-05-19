@@ -27,7 +27,7 @@ namespace University.Application.Services
 
             if (user is not null)
             {
-                var result = _passwordHasher.VerifyHashedPassword(user, user.password, password);
+                var result = _passwordHasher.VerifyHashedPassword(user, user.Password, password);
                 if(result == PasswordVerificationResult.Success)
                 {
                     return user;

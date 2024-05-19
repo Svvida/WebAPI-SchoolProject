@@ -10,15 +10,15 @@ namespace University.GraphQL.Types
     {
         protected override void Configure(IObjectTypeDescriptor<Users_Accounts_Roles> descriptor)
         {
-            descriptor.Field(uar => uar.account_id).Type<NonNullType<IdType>>();
-            descriptor.Field(uar => uar.account)
+            descriptor.Field(uar => uar.AccountId).Type<NonNullType<IdType>>();
+            descriptor.Field(uar => uar.Account)
                 .Type<AccountType>()
                 .ResolveWith<AccountRoleResolvers>(r => r.GetAccount(default!, default!))
                 .UseDbContext<UniversityContext>()
                 .Name("account");
 
-            descriptor.Field(uar => uar.role_id).Type<NonNullType<IdType>>();
-            descriptor.Field(uar => uar.role)
+            descriptor.Field(uar => uar.RoleId).Type<NonNullType<IdType>>();
+            descriptor.Field(uar => uar.Role)
                 .Type<RoleType>()
                 .ResolveWith<AccountRoleResolvers>(r => r.GetRole(default!, default!))
                 .UseDbContext<UniversityContext>()
@@ -31,16 +31,16 @@ namespace University.GraphQL.Types
             {
                 using var context = dbContextFactory.CreateDbContext();
                 return context.Accounts
-                    .Include(a => a.roles)
-                    .ThenInclude(uar => uar.role)
-                    .FirstOrDefault(a => a.id == uar.account_id);
+                    .Include(a => a.Roles)
+                    .ThenInclude(uar => uar.Role)
+                    .FirstOrDefault(a => a.Id == uar.AccountId);
             }
 
             public Roles GetRole([Parent] Users_Accounts_Roles uar, [Service] IDbContextFactory<UniversityContext> dbContextFactory)
             {
                 using var context = dbContextFactory.CreateDbContext();
                 return context.Roles
-                    .FirstOrDefault(r => r.id == uar.role_id);
+                    .FirstOrDefault(r => r.Id == uar.RoleId);
             }
         }
     }

@@ -1,0 +1,33 @@
+﻿@page
+@model University.RazorPages.Pages.Admin.Addresses.IndexAddressesModel
+@{
+    ViewData["Title"] = "Addresses";
+}
+
+<h2>Addresses</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Country</th>
+            <th>City</th>
+            <th>Postal Code</th>
+            <th>Street</th>
+            <th>Building Number</th>
+            <th>Apartment Number</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var address in Model.Addresses)
+        {
+            <tr>
+                <td>@address.Country</td>
+                <td>@address.City</td>
+                <td>@address.PostalCode</td>
+                <td>@address.Street</td>
+                <td>@address.BuildingNumber</td>
+                <td>@address.ApartmentNumber</td>
+            </tr>
+        }
+    </tbody>
+</table>

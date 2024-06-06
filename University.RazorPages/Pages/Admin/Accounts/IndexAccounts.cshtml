@@ -1,4 +1,34 @@
 ﻿@page
 @model University.RazorPages.Pages.Admin.Accounts.IndexAccountsModel
 @{
+    ViewData["Title"] = "Accounts";
 }
+
+<h2>Accounts</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Login</th>
+            <th>Active</th>
+            <th>Roles</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var account in Model.Accounts)
+        {
+            <tr>
+                <td>@account.Email</td>
+                <td>@account.Login</td>
+                <td>@account.IsActive</td>
+                <td>
+                    @foreach (var role in account.Roles)
+                    {
+                        <span>@role.Name</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

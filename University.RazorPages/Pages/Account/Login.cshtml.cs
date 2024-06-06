@@ -30,7 +30,7 @@ namespace University.RazorPages.Pages.Account
                 return Page();
             }
 
-            // Save the token in the session or cookie if necessary
+            // Save the token in the session or cookie
             HttpContext.Session.SetString("JWToken", token);
 
             return RedirectToPage("/Index");

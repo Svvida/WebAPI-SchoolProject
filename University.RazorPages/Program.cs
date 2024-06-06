@@ -40,6 +40,12 @@ builder.Services.AddHttpClient<RestApiService>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["RestApi:BaseUrl"]);
 });
+builder.Services.AddScoped<RestApiService>();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 builder.Services.AddHttpClient<GraphQLService>(client =>
 {

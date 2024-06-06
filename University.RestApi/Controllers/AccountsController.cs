@@ -27,15 +27,11 @@ namespace University.RestApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AccountDto>> Get(Guid id)
         {
-            try
-            {
-                var account = await _accountService.GetAccountByIdAsync(id);
-                return Ok(account);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var account = await _accountService.GetAccountByIdAsync(id);
+            if (account is null)
+                return NotFound("Account not found");
+
+            return Ok(account);
         }
 
         [HttpPost]
@@ -49,33 +45,25 @@ namespace University.RestApi.Controllers
         public async Task<IActionResult> Update(Guid id, AccountDto accountDto)
         {
             if (id != accountDto.Id)
-            {
                 return BadRequest();
-            }
 
-            try
-            {
-                await _accountService.UpdateAccountAsync(accountDto);
-                return NoContent();
-            }
-            catch (KeyNotFoundException ex)
-            {
+            var existingAccount = await _accountService.GetAccountByIdAsync(id);
+            if (existingAccount is null)
                 return NotFound();
-            }
+
+            await _accountService.UpdateAccountAsync(accountDto);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            try
-            {
-                await _accountService.DeleteAccountAsync(id);
-                return NoContent();
-            }
-            catch (KeyNotFoundException ex)
-            {
+            var existingAccount = await _accountService.GetAccountByIdAsync(id);
+            if (existingAccount is null)
                 return NotFound();
-            }
+
+            await _accountService.DeleteAccountAsync(id);
+            return NoContent();
         }
     }
 }

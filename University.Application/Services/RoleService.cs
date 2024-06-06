@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using University.Application.DTOs;
+using University.Application.Interfaces;
 using University.Domain.Entities;
 using University.Domain.Interfaces;
 
 namespace University.Application.Services
 {
-    public class RoleService
+    public class RoleService : IRoleService
     {
         private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;

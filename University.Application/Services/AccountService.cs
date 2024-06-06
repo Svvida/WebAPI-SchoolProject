@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using University.Application.DTOs;
+using University.Application.Interfaces;
 using University.Domain.Entities;
 using University.Domain.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System;
 
 namespace University.Application.Services
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IMapper _mapper;
@@ -36,7 +40,7 @@ namespace University.Application.Services
         public async Task<AccountDto> GetAccountByIdAsync(Guid id)
         {
             var account = await _accountRepository.GetByIdAsync(id);
-            if (account is null)
+            if (account == null)
             {
                 throw new KeyNotFoundException("Account not found");
             }
@@ -47,13 +51,13 @@ namespace University.Application.Services
         public async Task UpdateAccountAsync(AccountDto accountDto)
         {
             var accountEntity = await _accountRepository.GetByIdAsync(accountDto.Id);
-            if (accountEntity is null)
+            if (accountEntity == null)
             {
                 throw new KeyNotFoundException("Account not found");
             }
 
             _mapper.Map(accountDto, accountEntity);
-            if(!string.IsNullOrWhiteSpace(accountDto.Password))
+            if (!string.IsNullOrWhiteSpace(accountDto.Password))
             {
                 accountEntity.Password = _passwordHasher.HashPassword(accountEntity, accountDto.Password);
             }
@@ -64,7 +68,7 @@ namespace University.Application.Services
         public async Task DeleteAccountAsync(Guid id)
         {
             var accountToDelete = await _accountRepository.GetByIdAsync(id);
-            if (accountToDelete is null)
+            if (accountToDelete == null)
             {
                 throw new KeyNotFoundException("Account not found");
             }
@@ -78,6 +82,23 @@ namespace University.Application.Services
             // Hash password before saving it to the database
             accountEntity.Password = _passwordHasher.HashPassword(accountEntity, accountDto.Password);
             await _accountRepository.AddAsync(accountEntity);
+        }
+
+        public async Task<Users_Accounts> ValidateUserAsync(string login, string password)
+        {
+            // Fetch the user
+            var user = await _accountRepository.GetByLoginAsync(login);
+
+            if (user != null)
+            {
+                var result = _passwordHasher.VerifyHashedPassword(user, user.Password, password);
+                if (result == PasswordVerificationResult.Success)
+                {
+                    return user;
+                }
+            }
+
+            throw new Exception("Invalid login attempt");
         }
     }
 }

@@ -12,6 +12,7 @@ using University.Domain.Entities;
 using University.Domain.Interfaces;
 using University.Infrastructure.Data;
 using University.Infrastructure.Repositories;
+using University.RestApi.Middlewares;
 
 namespace University.RestApi
 {
@@ -20,9 +21,6 @@ namespace University.RestApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            // Load secrets.json for development purposes
-            builder.Configuration.AddJsonFile("secrets.json", optional:true, reloadOnChange: true);
 
             // Configure JWT authentication service
             var jwtSecretKey = builder.Configuration["JwtSettings:SecretKey"];
@@ -47,18 +45,20 @@ namespace University.RestApi
             builder.Services.AddDbContext<UniversityContext>(options =>
                 options.UseInMemoryDatabase("University"));
 
-            //Register Authentication service
-            builder.Services.AddScoped<IAuthService, AuthService>();
-            builder.Services.AddScoped<IStudentService, StudentService>();
+            // Register Repositories
+            builder.Services.AddScoped<IAccountRepository, AccountRepository>();
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<IAddressRepository, AddressRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-            builder.Services.AddScoped<RoleService>();
+
+            // Register Services with Interfaces
+            builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddScoped<IStudentService, StudentService>();
+            builder.Services.AddScoped<IAddressService, AddressService>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
 
             // Register password hasher for user accounts
             builder.Services.AddScoped<IPasswordHasher<Users_Accounts>, PasswordHasher<Users_Accounts>>();
-
-            // Repositories
-            builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
             // Automapper configuration
             builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -70,14 +70,14 @@ namespace University.RestApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "My Api", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "University API", Version = "v1" });
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
                     Scheme = "bearer",
-                    BearerFormat="JWT",
+                    BearerFormat = "JWT",
                     In = ParameterLocation.Header,
                     Description = "JWT Authorization header using Bearer scheme"
                 });
@@ -90,7 +90,7 @@ namespace University.RestApi
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id= "Bearer"
+                                Id = "Bearer"
                             }
                         },
                         new string[]{}
@@ -109,21 +109,21 @@ namespace University.RestApi
 
             app.UseHttpsRedirection();
 
-            app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // Use the LoggingMiddleware
+            app.UseMiddleware<LoggingMiddleware>();
 
             app.MapControllers();
 
             // Seed the database
             using (var scope = app.Services.CreateScope())
             {
-                var services =scope.ServiceProvider;
+                var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<UniversityContext>();
-                var passwordHasher = services.GetRequiredService<IPasswordHasher<Users_Accounts?>>();
-                var configuration = services.GetRequiredService<IConfiguration>();
-                UniversityContextSeed.Initialize(context, passwordHasher, configuration);
+                var passwordHasher = services.GetRequiredService<IPasswordHasher<Users_Accounts>>();
+                UniversityContextSeed.Initialize(context, passwordHasher, builder.Configuration);
             }
 
             app.Run();

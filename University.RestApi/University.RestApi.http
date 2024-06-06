@@ -1,6 +1,130 @@
-@University.RestApi_HostAddress = http://localhost:5217
+@host = http://localhost:5217
+@token = {{token}}
 
-GET {{University.RestApi_HostAddress}}/weatherforecast/
-Accept: application/json
+### 1. Login to get JWT token
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+    "login": "admin",
+    "password": "admin123"
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        var response = JSON.parse(responseBody);
+        client.global.set("token", response.token);
+    });
+%}
 
 ###
+
+### 2. Get all accounts
+GET {{host}}/api/accounts
+Authorization: Bearer {{token}}
+
+###
+
+### 3. Get account by ID
+GET {{host}}/api/accounts/{id}
+Authorization: Bearer {{token}}
+
+###
+
+### 4. Create a new account
+POST {{host}}/api/accounts
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "email": "new.user@wsei.pl",
+    "login": "newuser",
+    "password": "newuser123",
+    "isActive": true
+}
+
+###
+
+### 5. Update an account
+PUT {{host}}/api/accounts/{id}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "id": "{id}",
+    "email": "updated.user@wsei.pl",
+    "login": "updateduser",
+    "isActive": true
+}
+
+###
+
+### 6. Delete an account
+DELETE {{host}}/api/accounts/{id}
+Authorization: Bearer {{token}}
+
+###
+
+### 7. Get all students
+GET {{host}}/api/students
+Authorization: Bearer {{token}}
+
+###
+
+### 8. Get student by ID
+GET {{host}}/api/students/{id}
+Authorization: Bearer {{token}}
+
+###
+
+### 9. Create a new student
+POST {{host}}/api/students
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "John",
+    "surname": "Doe",
+    "dateOfBirth": "2000-01-01",
+    "pesel": "12345678901",
+    "gender": 1,
+    "address": {
+        "country": "Poland",
+        "city": "Warsaw",
+        "postalCode": "00-001",
+        "street": "Main Street",
+        "buildingNumber": "10",
+        "apartmentNumber": "1"
+    }
+}
+
+###
+
+### 10. Update a student
+PUT {{host}}/api/students/{id}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "id": "{id}",
+    "name": "Jane",
+    "surname": "Doe",
+    "dateOfBirth": "2000-01-01",
+    "pesel": "12345678901",
+    "gender": 2,
+    "address": {
+        "country": "Poland",
+        "city": "Krakow",
+        "postalCode": "30-001",
+        "street": "Secondary Street",
+        "buildingNumber": "5",
+        "apartmentNumber": "2"
+    }
+}
+
+###
+
+### 11. Delete a student
+DELETE {{host}}/api/students/{id}
+Authorization: Bearer {{token}}
+

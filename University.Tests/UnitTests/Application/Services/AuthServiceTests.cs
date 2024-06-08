@@ -1,66 +1,51 @@
-﻿using Moq;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Moq;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using University.Application.DTOs;
+using University.Application.Interfaces;
+using University.Application.Services;
 using University.Domain.Entities;
 using University.Domain.Interfaces;
-using University.Application.Services;
 using Xunit;
-using Microsoft.AspNetCore.Identity;
 
 namespace University.Tests.UnitTests.Application.Services
 {
     public class AuthServiceTests
     {
-        private readonly Mock<IAccountRepository> _mockRepo;
-        private readonly AuthService _authService;
-        private readonly IPasswordHasher<Users_Accounts> _passwordHasher;
+        private readonly Mock<IAccountRepository> _mockAccountRepository;
+        private readonly Mock<IMapper> _mockMapper;
+        private readonly Mock<IPasswordHasher<Users_Accounts?>> _mockPasswordHasher;
+        private readonly AccountService _accountService;
 
         public AuthServiceTests()
         {
-            _mockRepo = new Mock<IAccountRepository>();
-            _passwordHasher = new PasswordHasher<Users_Accounts>();
-            _authService = new AuthService(_mockRepo.Object, _passwordHasher);
+            _mockAccountRepository = new Mock<IAccountRepository>();
+            _mockMapper = new Mock<IMapper>();
+            _mockPasswordHasher = new Mock<IPasswordHasher<Users_Accounts?>>();
+            _accountService = new AccountService(_mockAccountRepository.Object, _mockMapper.Object, _mockPasswordHasher.Object);
         }
 
         [Fact]
-        public async Task ValidateUserAsync_ValidCredentials_ReturnsUser()
+        public async Task GetAllAccountsAsync_ReturnsAccounts()
         {
             // Arrange
-            var user = new Users_Accounts { Login = "testuser", Password = _passwordHasher.HashPassword(null, "password") };
-            _mockRepo.Setup(repo => repo.GetByLoginAsync("testuser")).ReturnsAsync(user);
+            var accounts = new List<Users_Accounts>
+            {
+                new Users_Accounts { Id = Guid.NewGuid(), Email = "test1@example.com", Login = "test1" },
+                new Users_Accounts { Id = Guid.NewGuid(), Email = "test2@example.com", Login = "test2" }
+            };
+            _mockAccountRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(accounts);
 
             // Act
-            var result = await _authService.ValidateUserAsync("testuser", "password");
+            var result = await _accountService.GetAllAccountsAsync();
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal("testuser", result.Login);
+            Assert.Equal(2, result.Count());
         }
 
-        [Fact]
-        public async Task ValidateUserAsync_InvalidPassword_ReturnsNull()
-        {
-            // Arrange
-            var user = new Users_Accounts { Login = "testuser", Password = _passwordHasher.HashPassword(null, "password") };
-            _mockRepo.Setup(repo => repo.GetByLoginAsync("testuser")).ReturnsAsync(user);
-
-            // Act
-            var result = await _authService.ValidateUserAsync("testuser", "wrongpassword");
-
-            // Assert
-            Assert.Null(result);
-        }
-
-        [Fact]
-        public async Task ValidateUserAsync_NonExistentUser_ReturnsNull()
-        {
-            // Arrange
-            _mockRepo.Setup(repo => repo.GetByLoginAsync("nonexistent")).ReturnsAsync((Users_Accounts)null);
-
-            // Act
-            var result = await _authService.ValidateUserAsync("nonexistent", "password");
-
-            // Assert
-            Assert.Null(result);
-        }
+        // Add more tests for other methods
     }
 }

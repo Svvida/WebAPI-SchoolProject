@@ -1,10 +1,10 @@
 ﻿@page
-@model University.RazorPages.Pages.Admin.Addresses.IndexAddressesModel
+@model University.RazorPages.Pages.Admin.Addresses.IndexModel
 @{
-    ViewData["Title"] = "Addresses";
+    ViewData["Title"] = "Address List";
 }
 
-<h2>Addresses</h2>
+<h1>Address List</h1>
 
 <table class="table">
     <thead>
@@ -15,6 +15,7 @@
             <th>Street</th>
             <th>Building Number</th>
             <th>Apartment Number</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -27,7 +28,14 @@
                 <td>@address.Street</td>
                 <td>@address.BuildingNumber</td>
                 <td>@address.ApartmentNumber</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@address.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@address.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@address.Id">Delete</a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
+<a asp-page="./Create">Create New Address</a>

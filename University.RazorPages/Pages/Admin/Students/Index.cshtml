@@ -1,0 +1,35 @@
+﻿@page
+@model University.RazorPages.Pages.Admin.Students.IndexModel
+@{
+    ViewData["Title"] = "Student List";
+}
+
+<h1>Student List</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Date of Birth</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model.Students)
+        {
+            <tr>
+                <td>@student.Name</td>
+                <td>@student.Surname</td>
+                <td>@student.DateOfBirth.ToShortDateString()</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@student.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@student.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@student.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-page="./Create">Create New Student</a>

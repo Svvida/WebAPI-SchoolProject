@@ -19,7 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.RazorPages", "Un
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F4BD3673-7536-42BA-BF2D-504B4EFB9852}"
 	ProjectSection(SolutionItems) = preProject
-		cURL_tests.sh = cURL_tests.sh
+		graphql_tests.sh = graphql_tests.sh
+		restapi_tests.sh = restapi_tests.sh
 	EndProjectSection
 EndProject
 Global

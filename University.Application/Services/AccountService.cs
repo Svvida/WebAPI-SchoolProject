@@ -98,7 +98,7 @@ namespace University.Application.Services
                 }
             }
 
-            throw new Exception("Invalid login attempt");
+            return null;
         }
     }
 }

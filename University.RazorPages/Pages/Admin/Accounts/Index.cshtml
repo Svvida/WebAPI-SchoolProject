@@ -1,0 +1,35 @@
+﻿@page
+@model University.RazorPages.Pages.Admin.Accounts.IndexModel
+@{
+    ViewData["Title"] = "Account List";
+}
+
+<h1>Account List</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Login</th>
+            <th>Is Active</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var account in Model.Accounts)
+        {
+            <tr>
+                <td>@account.Email</td>
+                <td>@account.Login</td>
+                <td>@account.IsActive</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@account.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@account.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@account.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-page="./Create">Create New Account</a>

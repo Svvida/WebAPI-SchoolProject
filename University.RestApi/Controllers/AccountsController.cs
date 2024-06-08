@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using University.Application.DTOs;
+using University.Application.Interfaces;
 using University.Application.Services;
 
 namespace University.RestApi.Controllers
@@ -10,9 +11,9 @@ namespace University.RestApi.Controllers
     [ApiController]
     public class AccountsController : Controller
     {
-        private readonly AccountService _accountService;
+        private readonly IAccountService _accountService;
 
-        public AccountsController(AccountService accountService)
+        public AccountsController(IAccountService accountService)
         {
             _accountService = accountService;
         }

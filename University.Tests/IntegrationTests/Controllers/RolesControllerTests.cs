@@ -9,7 +9,7 @@ using University.Application.Interfaces;
 
 namespace University.Tests.IntegrationTests.Controllers
 {
-    public class RolesControllerTests
+    public class RolesControllerTests : IntegrationTestBase
     {
         private readonly Mock<IRoleService> _mockRoleService;
         private readonly RolesController _controller;
@@ -80,7 +80,9 @@ namespace University.Tests.IntegrationTests.Controllers
             // Arrange
             var roleId = Guid.NewGuid();
             var updatedRole = new RoleDto { Id = roleId, Name = "UpdatedRole" };
+            var existingRole = new RoleDto { Id = roleId, Name = "ExistingRole" };
 
+            _mockRoleService.Setup(service => service.GetRoleByIdAsync(roleId)).ReturnsAsync(existingRole);
             _mockRoleService.Setup(service => service.UpdateRolesAsync(updatedRole)).Returns(Task.CompletedTask);
 
             // Act
@@ -90,11 +92,15 @@ namespace University.Tests.IntegrationTests.Controllers
             result.Should().BeOfType<NoContentResult>();
         }
 
+
         [Fact]
         public async Task Delete_ReturnsNoContent_WhenRoleIsDeleted()
         {
             // Arrange
             var roleId = Guid.NewGuid();
+            var existingRole = new RoleDto { Id = roleId, Name = "RoleToDelete" };
+
+            _mockRoleService.Setup(service => service.GetRoleByIdAsync(roleId)).ReturnsAsync(existingRole);
             _mockRoleService.Setup(service => service.DeleteRolesAsync(roleId)).Returns(Task.CompletedTask);
 
             // Act
@@ -103,5 +109,6 @@ namespace University.Tests.IntegrationTests.Controllers
             // Assert
             result.Should().BeOfType<NoContentResult>();
         }
+
     }
 }

@@ -9,8 +9,8 @@ namespace University.Application.Interfaces
     {
         Task<IEnumerable<AddressDto>> GetAllAddressesAsync();
         Task<AddressDto> GetAddressByIdAsync(Guid id);
-        Task<AddressDto> CreateAddressAsync(AddressDto addressDto);
-        Task<AddressDto> UpdateAddressAsync(AddressDto addressDto);
+        Task CreateAddressAsync(AddressDto addressDto);
+        Task UpdateAddressAsync(AddressDto addressDto);
         Task DeleteAddressAsync(Guid id);
     }
 }

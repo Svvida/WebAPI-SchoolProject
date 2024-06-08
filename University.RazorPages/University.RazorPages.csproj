@@ -24,4 +24,11 @@
     <ProjectReference Include="..\University.Infrastructure\University.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Admin\Accounts\" />
+    <Folder Include="Pages\Admin\Addresses\" />
+    <Folder Include="Pages\Admin\Roles\" />
+    <Folder Include="Pages\Admin\Students\" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
-﻿using University.Domain.Entities;
+﻿using System.Threading.Tasks;
+using University.Domain.Entities;
 using University.GraphQL.Mutations;
 using University.Infrastructure.Data;
 
@@ -11,6 +12,7 @@ namespace University.GraphQL.Schemas
         private readonly RoleMutation _roleMutation = new RoleMutation();
         private readonly AddressMutation _addressMutation = new AddressMutation();
 
+        // Student Mutations
         public Task<Students> AddStudentAsync(StudentInput input, [Service] UniversityContext context) =>
             _studentMutation.AddStudentAsync(input, context);
 
@@ -20,6 +22,7 @@ namespace University.GraphQL.Schemas
         public Task<bool> DeleteStudentAsync(Guid id, [Service] UniversityContext context) =>
             _studentMutation.DeleteStudentAsync(id, context);
 
+        // Account Mutations
         public Task<Users_Accounts> AddAccountAsync(AccountInput input, [Service] UniversityContext context) =>
             _accountMutation.AddAccountAsync(input, context);
 
@@ -29,6 +32,7 @@ namespace University.GraphQL.Schemas
         public Task<bool> DeleteAccountAsync(Guid id, [Service] UniversityContext context) =>
             _accountMutation.DeleteAccountAsync(id, context);
 
+        // Role Mutations
         public Task<Roles> AddRoleAsync(RoleInput input, [Service] UniversityContext context) =>
             _roleMutation.AddRoleAsync(input, context);
 
@@ -44,7 +48,14 @@ namespace University.GraphQL.Schemas
         public Task<bool> DeleteRoleFromAccountAsync(Guid accountId, Guid roleId, [Service] UniversityContext context) =>
             _accountMutation.DeleteRoleFromAccountAsync(accountId, roleId, context);
 
-        public Task<Students_Addresses> UpdateAddressAsync(AddressInput input, [Service] UniversityContext context) =>
+        // Address Mutations
+        public Task<Students_Addresses> AddAddressAsync(AddressInput input, [Service] UniversityContext context) =>
+            _addressMutation.AddAddressAsync(input, context);
+
+        public Task<Students_Addresses> UpdateAddressAsync(UpdateAddressInput input, [Service] UniversityContext context) =>
             _addressMutation.UpdateAddressAsync(input, context);
+
+        public Task<bool> DeleteAddressAsync(Guid id, [Service] UniversityContext context) =>
+            _addressMutation.DeleteAddressAsync(id, context);
     }
 }

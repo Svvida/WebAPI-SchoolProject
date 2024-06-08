@@ -35,6 +35,11 @@ namespace University.Infrastructure.Data
                 .WithOne()
                 .HasForeignKey<Students>(s => s.AddressId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Students>()
+                .HasOne(s => s.Account)
+                .WithOne()
+                .HasForeignKey<Students>(s => s.AccountId);
         }
     }
 }

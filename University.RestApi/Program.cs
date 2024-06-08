@@ -56,6 +56,7 @@ namespace University.RestApi
             builder.Services.AddScoped<IStudentService, StudentService>();
             builder.Services.AddScoped<IAddressService, AddressService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
+            builder.Services.AddScoped<AccountService>();
 
             // Register password hasher for user accounts
             builder.Services.AddScoped<IPasswordHasher<Users_Accounts>, PasswordHasher<Users_Accounts>>();
@@ -106,6 +107,9 @@ namespace University.RestApi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            // Ensure the app listens on all network interfaces
+            app.Urls.Add("http://*:5217");
 
             app.UseHttpsRedirection();
 

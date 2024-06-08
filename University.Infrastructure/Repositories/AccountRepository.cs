@@ -77,7 +77,7 @@ namespace University.Infrastructure.Repositories
         public async Task DeleteRoleFromAccountAsync(Guid userId, Guid roleId)
         {
             var accountRole = await _context.UserAccountRoles
-                .FirstOrDefaultAsync(uar => uar.RoleId == userId && uar.AccountId == roleId);
+                .FirstOrDefaultAsync(uar => uar.AccountId == userId && uar.RoleId == roleId);
 
             if (accountRole is null)
             {
@@ -85,9 +85,9 @@ namespace University.Infrastructure.Repositories
             }
 
             _context.UserAccountRoles.Remove(accountRole);
-
             await _context.SaveChangesAsync();
         }
+
 
         public async Task<Users_Accounts> GetByLoginAsync(string login)
         {

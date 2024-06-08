@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using University.Application.DTOs;
+using University.Application.Interfaces;
 using University.Application.Services;
 using University.Domain.Entities;
 
@@ -15,9 +16,9 @@ namespace University.RestApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        private readonly AccountService _accountService;
+        private readonly IAccountService _accountService;
 
-        public AuthController(IConfiguration configuration, AccountService accountService)
+        public AuthController(IConfiguration configuration, IAccountService accountService)
         {
             _configuration = configuration;
             _accountService = accountService;
@@ -27,7 +28,7 @@ namespace University.RestApi.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             var user = await _accountService.ValidateUserAsync(loginDto.Login, loginDto.Password);
-            if (user != null)
+            if (user is not null)
             {
                 var token = GenerateJwtToken(user);
                 return Ok(new { token });

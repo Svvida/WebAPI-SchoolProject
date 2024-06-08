@@ -1,57 +1,69 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using University.Application.Interfaces;
+using University.Application.Services;
+using University.Domain.Entities;
+using University.Domain.Interfaces;
+using University.Infrastructure.Repositories;
 using University.RazorPages.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure JWT authentication service
-var jwtSecretKey = builder.Configuration["JwtSettings:SecretKey"];
-
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-// Add authentication services
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-            ValidateAudience = true,
-            ValidAudience = builder.Configuration["JwtSettings:Audience"],
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey)),
-            ClockSkew = TimeSpan.Zero
-        };
-    });
+// Add configuration
+var configuration = builder.Configuration;
 
-// Add authorization services
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-});
-
-// Register services
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient<RestApiService>(client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["RestApi:BaseUrl"]);
-});
-builder.Services.AddScoped<RestApiService>();
-builder.Services.AddSession(options =>
-{
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
+    client.BaseAddress = new Uri("https://localhost:7084");
 });
 
-builder.Services.AddHttpClient<GraphQLService>(client =>
+// Add AutoMapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+// Add Repositories and Services
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+
+builder.Services.AddSingleton<IPasswordHasher<Users_Accounts?>, PasswordHasher<Users_Accounts?>>();
+
+
+builder.Services.AddAuthentication(options =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["GraphQL:BaseUrl"]);
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:SecretKey"])),
+    };
 });
-builder.Services.AddScoped<GraphQLService>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("StudentPolicy", policy => policy.RequireRole("Student"));
+    options.AddPolicy("TeacherPolicy", policy => policy.RequireRole("Teacher"));
+});
 
 var app = builder.Build();
 

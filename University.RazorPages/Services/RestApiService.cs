@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using University.RazorPages.Models;
+using University.Application.DTOs;
 
 namespace University.RazorPages.Services
 {
@@ -24,12 +24,56 @@ namespace University.RazorPages.Services
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var token = JsonSerializer.Deserialize<TokenResponse>(responseContent)?.Token;
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                return token;
+                var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(responseContent);
+
+                if (tokenResponse?.Token != null)
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.Token);
+                    return tokenResponse.Token;
+                }
             }
 
             return null;
+        }
+
+        public async Task<IList<StudentDto>> GetStudentsAsync()
+        {
+            var response = await _httpClient.GetAsync("/api/students");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<StudentDto>>(responseContent);
+            }
+
+            return new List<StudentDto>();
+        }
+
+        public async Task CreateStudentAsync(StudentDto student)
+        {
+            var content = new StringContent(JsonSerializer.Serialize(student), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("/api/students", content);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task<StudentDto> GetStudentByIdAsync(Guid id)
+        {
+            var response = await _httpClient.GetAsync($"/api/students/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<StudentDto>(responseContent);
+            }
+
+            return null;
+        }
+
+        public async Task UpdateStudentAsync(StudentDto student)
+        {
+            var content = new StringContent(JsonSerializer.Serialize(student), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync($"/api/students/{student.Id}", content);
+            response.EnsureSuccessStatusCode();
         }
     }
 

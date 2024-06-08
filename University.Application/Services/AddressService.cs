@@ -37,14 +37,14 @@ namespace University.Application.Services
             return _mapper.Map<AddressDto>(address);
         }
 
-        public async Task<AddressDto> CreateAddressAsync(AddressDto addressDto)
+        public async Task CreateAddressAsync(AddressDto addressDto)
         {
             var addressEntity = _mapper.Map<Students_Addresses>(addressDto);
-            var createdAddress = await _addressRepository.CreateAsync(addressEntity);
-            return _mapper.Map<AddressDto>(createdAddress);
+            await _addressRepository.CreateAsync(addressEntity);
+
         }
 
-        public async Task<AddressDto> UpdateAddressAsync(AddressDto addressDto)
+        public async Task UpdateAddressAsync(AddressDto addressDto)
         {
             var addressEntity = await _addressRepository.GetByIdAsync(addressDto.Id);
             if (addressEntity is null)
@@ -53,8 +53,7 @@ namespace University.Application.Services
             }
 
             _mapper.Map(addressDto, addressEntity);
-            var updatedAddress = await _addressRepository.UpdateAsync(addressEntity);
-            return _mapper.Map<AddressDto>(updatedAddress);
+            await _addressRepository.UpdateAsync(addressEntity);
         }
 
         public async Task DeleteAddressAsync(Guid id)

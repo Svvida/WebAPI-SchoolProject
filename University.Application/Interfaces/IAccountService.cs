@@ -14,5 +14,6 @@ namespace University.Application.Interfaces
         Task DeleteAccountAsync(Guid id);
         Task AddAccountAsync(AccountDto accountDto);
         Task<Users_Accounts> ValidateUserAsync(string login, string password);
+        Task<IEnumerable<RoleDto>> GetAccountRolesAsync(Guid accountId);
     }
 }

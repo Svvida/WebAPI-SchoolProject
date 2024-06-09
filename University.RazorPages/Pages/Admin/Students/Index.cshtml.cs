@@ -7,7 +7,7 @@ using University.RazorPages.Services;
 
 namespace University.RazorPages.Pages.Admin.Students
 {
-    [Authorize(Policy = "AdminPolicy")]
+    [Authorize(Policy = "EverybodyPolicy")]
     public class IndexModel : PageModel
     {
         private readonly RestApiService _apiService;

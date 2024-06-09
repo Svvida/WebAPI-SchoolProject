@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using University.Application.DTOs;
 using University.Application.Interfaces;
 
 namespace University.RazorPages.Pages.Admin.Roles
 {
-    [Authorize(Policy = "AdminPolicy")]
+    [Authorize(Policy = "EverybodyPolicy")]
     public class IndexModel : PageModel
     {
         private readonly IRoleService _roleService;

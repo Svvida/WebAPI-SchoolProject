@@ -37,19 +37,28 @@ namespace University.RestApi.Controllers
             return Unauthorized("Invalid login attempt.");
         }
 
+
         private string GenerateJwtToken(Users_Accounts user)
         {
             var issuer = _configuration["JwtSettings:Issuer"];
             var audience = _configuration["JwtSettings:Audience"];
             var key = Encoding.ASCII.GetBytes(_configuration["JwtSettings:SecretKey"]);
 
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Login)
+            };
+
+            foreach (var userRole in user.Roles)
+            {
+                var role = userRole.Role;
+                claims.Add(new Claim(ClaimTypes.Role, role.Name));
+            }
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Login)
-                }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddHours(1),
                 Issuer = issuer,
                 Audience = audience,

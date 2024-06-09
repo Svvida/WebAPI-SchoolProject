@@ -8,7 +8,7 @@ using University.Application.Interfaces;
 
 namespace University.RazorPages.Pages.Admin.Accounts
 {
-    [Authorize(Policy = "AdminPolicy")]
+    [Authorize(Policy = "EverybodyPolicy")]
     public class IndexModel : PageModel
     {
         private readonly IAccountService _accountService;

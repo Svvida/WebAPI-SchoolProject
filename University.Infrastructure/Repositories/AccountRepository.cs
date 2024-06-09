@@ -16,12 +16,17 @@ namespace University.Infrastructure.Repositories
 
         public async Task<IEnumerable<Users_Accounts>> GetAllAsync()
         {
-            return await _context.Accounts.ToListAsync();
+            return await _context.Accounts
+                .Include(a => a.Roles)
+                    .ThenInclude(ur => ur.Role)
+                    .ToListAsync();
         }
-
         public async Task<Users_Accounts> GetByIdAsync(Guid id)
         {
-            return await _context.Accounts.FindAsync(id);
+            return await _context.Accounts
+                .Include(a => a.Roles)
+                    .ThenInclude(ur => ur.Role)
+                .SingleOrDefaultAsync(a => a.Id == id);
         }
 
         public async Task<Users_Accounts> AddAsync(Users_Accounts account)
@@ -93,9 +98,15 @@ namespace University.Infrastructure.Repositories
         {
             if (login == null) throw new KeyNotFoundException("There is no student with that login");
 
+            return await _context.Accounts.SingleOrDefaultAsync(a => a.Login == login);
+        }
+
+        public async Task<Users_Accounts> GetByLoginWithRolesAsync(string login)
+        {
             return await _context.Accounts
-                .Where(a => a.Login == login)
-                .FirstOrDefaultAsync();
+                .Include(a => a.Roles)
+                    .ThenInclude(ur => ur.Role)
+                .SingleOrDefaultAsync(a => a.Login == login);
         }
     }
 }

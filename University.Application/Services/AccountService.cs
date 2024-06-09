@@ -6,7 +6,7 @@ using University.Domain.Entities;
 using University.Domain.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System;
+using System.Linq;
 
 namespace University.Application.Services
 {
@@ -33,7 +33,12 @@ namespace University.Application.Services
                 Email = a.Email,
                 Login = a.Login,
                 IsActive = a.IsActive,
-                DeactivationDate = a.DeactivationDate
+                DeactivationDate = a.DeactivationDate,
+                Roles = a.Roles.Select(r => new RoleDto
+                {
+                    Id = r.Role.Id,
+                    Name = r.Role.Name
+                }).ToList()
             });
         }
 
@@ -86,8 +91,8 @@ namespace University.Application.Services
 
         public async Task<Users_Accounts> ValidateUserAsync(string login, string password)
         {
-            // Fetch the user
-            var user = await _accountRepository.GetByLoginAsync(login);
+            // Fetch the user including roles
+            var user = await _accountRepository.GetByLoginWithRolesAsync(login);
 
             if (user != null)
             {
@@ -99,6 +104,21 @@ namespace University.Application.Services
             }
 
             return null;
+        }
+
+        public async Task<IEnumerable<RoleDto>> GetAccountRolesAsync(Guid accountId)
+        {
+            var account = await _accountRepository.GetByIdAsync(accountId);
+            if (account == null)
+            {
+                throw new KeyNotFoundException("Account not found");
+            }
+
+            return account.Roles.Select(r => new RoleDto
+            {
+                Id = r.Role.Id,
+                Name = r.Role.Name
+            });
         }
     }
 }

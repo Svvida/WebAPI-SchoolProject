@@ -7,28 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GraphQL.Client" Version="6.0.5" />
-    <PackageReference Include="GraphQL.Client.Serializer.SystemTextJson" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+    <PackageReference Include="StrawberryShake" Version="13.9.5" />
+    <PackageReference Include="StrawberryShake.CodeGeneration.CSharp" Version="12.22.4" />
+    <PackageReference Include="StrawberryShake.Transport.Http" Version="13.9.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\University.Application\University.Application.csproj" />
     <ProjectReference Include="..\University.Domain\University.Domain.csproj" />
     <ProjectReference Include="..\University.Infrastructure\University.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\Admin\Accounts\" />
-    <Folder Include="Pages\Admin\Addresses\" />
-    <Folder Include="Pages\Admin\Roles\" />
-    <Folder Include="Pages\Admin\Students\" />
   </ItemGroup>
 
 </Project>

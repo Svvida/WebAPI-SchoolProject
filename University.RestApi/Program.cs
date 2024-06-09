@@ -110,6 +110,7 @@ namespace University.RestApi
 
             // Ensure the app listens on all network interfaces
             app.Urls.Add("http://*:5217");
+            app.Urls.Add("https://*:7084");
 
             app.UseHttpsRedirection();
 

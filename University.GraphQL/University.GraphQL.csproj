@@ -11,6 +11,7 @@
     <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="13.9.4" />
     <PackageReference Include="HotChocolate.Data.EntityFramework" Version="13.9.4" />
     <PackageReference Include="HotChocolate.Execution" Version="13.9.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
   </ItemGroup>
 
   <ItemGroup>

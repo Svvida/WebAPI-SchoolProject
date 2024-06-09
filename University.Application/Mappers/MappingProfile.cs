@@ -17,7 +17,7 @@ namespace University.Application.Mappers
 
             // Users_Accounts to AccountDto with Roles
             CreateMap<Users_Accounts, AccountDto>()
-                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.Roles.Select(r => new RoleDto { Id = r.RoleId, Name = r.Role.Name })));
+                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.Roles.Select(r => new RoleDto { Id = r.Role.Id, Name = r.Role.Name })));
 
             // AccountDto to Users_Accounts with Roles
             CreateMap<AccountDto, Users_Accounts>()

@@ -7,7 +7,7 @@ using University.Application.Interfaces;
 
 namespace University.RazorPages.Pages.Admin.Addresses
 {
-    [Authorize(Policy = "AdminPolicy")]
+    [Authorize(Policy = "AdminOrStudentPolicy")]
     public class EditModel : PageModel
     {
         private readonly IAddressService _addressService;
